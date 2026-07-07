@@ -12,13 +12,7 @@ class ModifierGroup extends Model
 {
     use HasFactory, HasUuid, SoftDeletes;
 
-    protected $fillable = [
-        'branch_id',
-        'name',
-        'min_select',
-        'max_select',
-        'is_active',
-    ];
+    protected $guarded = ['id'];
 
     /**
      * Get the branch this group belongs to.

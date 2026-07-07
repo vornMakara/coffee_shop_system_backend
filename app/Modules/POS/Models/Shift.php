@@ -12,15 +12,7 @@ class Shift extends Model
 {
     use HasFactory, HasUuid;
 
-    protected $fillable = [
-        'branch_id',
-        'user_id',
-        'opening_cash',
-        'closing_cash',
-        'status',
-        'opened_at',
-        'closed_at',
-    ];
+    protected $guarded = ['id'];
 
     protected $casts = [
         'opened_at' => 'datetime',

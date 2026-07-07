@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backend MVP 3 - Task List</title>
+    <style>
+        :root {
+            --primary: #F05340; /* Laravel Red */
+            --primary-light: #fbeee9;
+            --secondary: #1E293B;
+            --accent: #3B82F6;
+            --success: #10B981;
+            --background: #F8FAFC;
+            --surface: #FFFFFF;
+            --text-main: #334155;
+            --text-light: #64748B;
+            --border: #E2E8F0;
+            --radius: 12px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--background);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: var(--secondary);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .phase-card {
+            background-color: var(--surface);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border);
+            border-top: 5px solid var(--primary);
+        }
+
+        .phase-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .phase-header h2 {
+            color: var(--secondary);
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .phase-desc {
+            color: var(--text-light);
+            font-style: italic;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .task-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px 0;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .checkbox {
+            margin-right: 15px;
+            margin-top: 5px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--success);
+        }
+
+        .task-content {
+            flex: 1;
+        }
+
+        .task-title {
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .task-details {
+            color: var(--text-main);
+            font-size: 0.95rem;
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .task-details li {
+            margin-bottom: 4px;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .code-snippet {
+            background-color: #F1F5F9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #EF4444;
+            font-size: 0.9em;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>🚀 Backend MVP 3 Roadmap</h1>
+            <p class="subtitle">Supply Chain & Procurement</p>
+        </header>
+
+        <!-- Phase 1 -->
+        <div class="phase-card">
+            <div class="phase-header">
+                <div>
+                    <h2>Phase 1: Procurement</h2>
+                    <span class="phase-desc">Buying goods from suppliers.</span>
+                </div>
+            </div>
+            <ul class="task-list">
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox">
+                    <div class="task-content">
+                        <div class="badge">Directory</div>
+                        <div class="task-title">Task 1: Supplier Management API</div>
+                        <ul class="task-details">
+                            <li>CRUD endpoints for <span class="code-snippet">suppliers</span>.</li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox">
+                    <div class="task-content">
+                        <div class="badge">Orders</div>
+                        <div class="task-title">Task 2: Purchase Orders API</div>
+                        <ul class="task-details">
+                            <li><span class="code-snippet">POST /api/v1/purchase-orders</span> (Create PO and <span class="code-snippet">purchase_order_items</span>).</li>
+                            <li>Update PO status (Draft -> Sent).</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Phase 2 -->
+        <div class="phase-card" style="border-top-color: #3B82F6;">
+            <div class="phase-header">
+                <div>
+                    <h2>Phase 2: Receiving & Accounts Payable</h2>
+                    <span class="phase-desc">Verifying deliveries and tracking payments.</span>
+                </div>
+            </div>
+            <ul class="task-list">
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox">
+                    <div class="task-content">
+                        <div class="badge">Stock In</div>
+                        <div class="task-title">Task 3: Goods Receipts API</div>
+                        <ul class="task-details">
+                            <li><span class="code-snippet">POST /api/v1/goods-receipts</span> (Confirm delivered goods).</li>
+                            <li>Automatically trigger <span class="code-snippet">inventory_movements</span> (<span class="code-snippet">purchase</span>) when receipt is confirmed.</li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox">
+                    <div class="task-content">
+                        <div class="badge">Finance</div>
+                        <div class="task-title">Task 4: Supplier Payments API</div>
+                        <ul class="task-details">
+                            <li>Endpoints for recording <span class="code-snippet">supplier_payments</span> against a PO.</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Phase 3 -->
+        <div class="phase-card" style="border-top-color: #10B981;">
+            <div class="phase-header">
+                <div>
+                    <h2>Phase 3: Multi-Branch Logistics</h2>
+                    <span class="phase-desc">Distributing goods between branches.</span>
+                </div>
+            </div>
+            <ul class="task-list">
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox">
+                    <div class="task-content">
+                        <div class="badge">Transfers</div>
+                        <div class="task-title">Task 5: Stock Transfers API</div>
+                        <ul class="task-details">
+                            <li><span class="code-snippet">POST /api/v1/stock-transfers</span> (Request stock transfer).</li>
+                            <li>Update transfer status (Pending -> In Transit -> Received).</li>
+                            <li>Auto-deduct from source and add to destination upon receipt.</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</body>
+</html>

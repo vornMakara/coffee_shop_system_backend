@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS System Roadmap & Feature Summary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.5);
+            --border: #334155;
+            --mvp1: #10b981;
+            --mvp2: #f59e0b;
+            --mvp3: #8b5cf6;
+            --mvp4: #ec4899;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .roadmap {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .phase-card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .phase-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+        }
+
+        .phase-card:nth-child(1)::before { background-color: var(--mvp1); }
+        .phase-card:nth-child(2)::before { background-color: var(--mvp2); }
+        .phase-card:nth-child(3)::before { background-color: var(--mvp3); }
+        .phase-card:nth-child(4)::before { background-color: var(--mvp4); }
+
+        .phase-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .phase-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .badge-mvp1 { background-color: rgba(16, 185, 129, 0.1); color: var(--mvp1); border: 1px solid rgba(16, 185, 129, 0.3); }
+        .badge-mvp2 { background-color: rgba(245, 158, 11, 0.1); color: var(--mvp2); border: 1px solid rgba(245, 158, 11, 0.3); }
+        .badge-mvp3 { background-color: rgba(139, 92, 246, 0.1); color: var(--mvp3); border: 1px solid rgba(139, 92, 246, 0.3); }
+        .badge-mvp4 { background-color: rgba(236, 72, 153, 0.1); color: var(--mvp4); border: 1px solid rgba(236, 72, 153, 0.3); }
+
+        .phase-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .phase-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+
+        .feature-group {
+            margin-bottom: 20px;
+        }
+
+        .feature-group h4 {
+            color: var(--text-primary);
+            font-size: 1.05rem;
+            margin-bottom: 12px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        li {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+            transition: color 0.2s ease;
+        }
+        
+        li:hover {
+            color: var(--text-primary);
+        }
+
+        li::before {
+            content: "→";
+            margin-right: 8px;
+            font-weight: bold;
+        }
+
+        .phase-card:nth-child(1) li::before { color: var(--mvp1); }
+        .phase-card:nth-child(2) li::before { color: var(--mvp2); }
+        .phase-card:nth-child(3) li::before { color: var(--mvp3); }
+        .phase-card:nth-child(4) li::before { color: var(--mvp4); }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>POS System Feature Roadmap</h1>
+        <p class="subtitle">A structured 4-phase rollout plan, evolving from core POS operations into an enterprise-grade multi-branch restaurant management system.</p>
+    </header>
+
+    <div class="roadmap">
+        <!-- MVP 1 -->
+        <div class="phase-card">
+            <span class="phase-badge badge-mvp1">Phase 1</span>
+            <h3 class="phase-title">MVP 1: Core POS</h3>
+            <p class="phase-desc">The foundation. Everything needed to open the doors, take orders, and process payments.</p>
+            
+            <div class="feature-group">
+                <h4>Auth & Setup</h4>
+                <ul>
+                    <li>System Configuration & Versioning</li>
+                    <li>Branch Settings (Tax Rates, Receipt Footer)</li>
+                    <li>Role-Based Permissions</li>
+                    <li>Staff User Accounts & Login</li>
+                    <li>Multi-Currency Config (USD/KHR)</li>
+                </ul>
+            </div>
+
+            <div class="feature-group">
+                <h4>Menu Management</h4>
+                <ul>
+                    <li>Product Categories</li>
+                    <li>Food & Beverage Products</li>
+                    <li>Modifier Groups (Sizes, Sugar Levels)</li>
+                    <li>Modifier Options & Pricing</li>
+                </ul>
+            </div>
+
+            <div class="feature-group">
+                <h4>Operations & Ordering</h4>
+                <ul>
+                    <li>Shift Management (Opening/Closing Cash)</li>
+                    <li>Table Seating & Status</li>
+                    <li>Order Flow (Dine-in, Takeaway)</li>
+                    <li>Checkout (Cash, Card, QR)</li>
+                    <li>Basic Receipt Printing</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- MVP 2 -->
+        <div class="phase-card">
+            <span class="phase-badge badge-mvp2">Phase 2</span>
+            <h3 class="phase-title">MVP 2: Kitchen & Inventory</h3>
+            <p class="phase-desc">Back-of-house operations. Routing tickets to chefs and automatically tracking ingredients.</p>
+            
+            <div class="feature-group">
+                <h4>Kitchen Display (KDS)</h4>
+                <ul>
+                    <li>KDS Stations (Bar, Kitchen, Grill)</li>
+                    <li>Digital Order Routing</li>
+                    <li>Kitchen Printer Mapping</li>
+                    <li>Order Timers & Status</li>
+                </ul>
+            </div>
+
+            <div class="feature-group">
+                <h4>Basic Inventory</h4>
+                <ul>
+                    <li>Raw Ingredients & Units</li>
+                    <li>Current Stock Levels</li>
+                    <li>Recipes (Auto-deduction on sale)</li>
+                    <li>Modifier Costing Recipes</li>
+                </ul>
+            </div>
+
+            <div class="feature-group">
+                <h4>Stock Adjustments</h4>
+                <ul>
+                    <li>Manual Inventory Movements</li>
+                    <li>Waste Records (Expired, Spilled)</li>
+                    <li>Low Stock Threshold Alerts</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- MVP 3 -->
+        <div class="phase-card">
+            <span class="phase-badge badge-mvp3">Phase 3</span>
+            <h3 class="phase-title">MVP 3: Supply Chain</h3>
+            <p class="phase-desc">Procurement and logistics. Buying goods from suppliers and distributing them across branches.</p>
+            
+            <div class="feature-group">
+                <h4>Procurement</h4>
+                <ul>
+                    <li>Supplier Directory</li>
+                    <li>Purchase Orders (POs)</li>
+                    <li>Goods Receipts (Verifying deliveries)</li>
+                    <li>Purchase Returns</li>
+                </ul>
+            </div>
+
+            <div class="feature-group">
+                <h4>Accounts Payable</h4>
+                <ul>
+                    <li>Supplier Payments tracking</li>
+                    <li>Purchase History & Costing</li>
+                </ul>
+            </div>
+
+            <div class="feature-group">
+                <h4>Multi-Branch Logistics</h4>
+                <ul>
+                    <li>Stock Transfers (Warehouse to Branch)</li>
+                    <li>Transfer Status (In Transit, Received)</li>
+                    <li>Multi-Branch Visibility</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- MVP 4 -->
+        <div class="phase-card">
+            <span class="phase-badge badge-mvp4">Phase 4</span>
+            <h3 class="phase-title">MVP 4: Growth & Analytics</h3>
+            <p class="phase-desc">Marketing, customer retention, and deep business analytics to scale the enterprise.</p>
+            
+            <div class="feature-group">
+                <h4>Loyalty & CRM</h4>
+                <ul>
+                    <li>Membership Tiers (Bronze, Gold, VIP)</li>
+                    <li>Loyalty Points (Earn & Redeem)</li>
+                    <li>Customer Store Credit</li>
+                    <li>Gift Cards Management</li>
+                </ul>
+            </div>
+
+            <div class="feature-group">
+                <h4>Marketing & Delivery</h4>
+                <ul>
+                    <li>Promotions Engine (Buy X Get Y)</li>
+                    <li>Discount Coupons</li>
+                    <li>Delivery Integrations (Grab, FoodPanda)</li>
+                </ul>
+            </div>
+
+            <div class="feature-group">
+                <h4>Financial Analytics</h4>
+                <ul>
+                    <li>Daily Sales Summaries</li>
+                    <li>Expense Tracking & Categories</li>
+                    <li>Product Profitability Reporting</li>
+                    <li>Cash Flow Analysis</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -30,8 +30,22 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->routes(function () {
             Route::middleware('api')
-                ->prefix('api')
+                ->prefix('api/v1')
                 ->group(base_path('routes/api.php'));
+
+            // Load Modular Routes (As per Architecture Blueprint)
+            $modulePath = app_path('Modules');
+            if (file_exists($modulePath)) {
+                $modules = array_diff(scandir($modulePath), ['.', '..']);
+                foreach ($modules as $module) {
+                    $routeFile = "$modulePath/$module/Routes/api.php";
+                    if (file_exists($routeFile)) {
+                        Route::middleware('api')
+                            ->prefix('api/v1')
+                            ->group($routeFile);
+                    }
+                }
+            }
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));

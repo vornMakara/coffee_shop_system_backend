@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS Database Schemas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #3b82f6;
+            --border: #334155;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            margin: 0;
+            display: flex;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: var(--surface-color);
+            border-right: 1px solid var(--border);
+            height: 100vh;
+            overflow-y: auto;
+            position: fixed;
+            padding: 20px;
+        }
+        .content {
+            margin-left: 290px;
+            padding: 40px;
+            max-width: 1000px;
+            width: 100%;
+        }
+        h1, h2, h3 { color: var(--text-primary); }
+        a { color: var(--text-secondary); text-decoration: none; display: block; margin-bottom: 10px; }
+        a:hover { color: var(--accent); }
+        .table-card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .table-card h3 {
+            margin-top: 0;
+            color: var(--accent);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+        }
+        pre {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            color: #e2e8f0;
+            white-space: pre-wrap;
+            background-color: #0b1120;
+            padding: 20px;
+            border-radius: 6px;
+            line-height: 1.5;
+        }
+        .keyword { color: #c678dd; font-weight: 500; }
+        .type { color: #e5c07b; }
+        .nav-header {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            margin: 20px 0 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2 style="color: var(--accent);">Coffee POS</h2>
+        <div class='nav-header'>MVP1 CORE</div>\n<a href='#system_info'>- system_info</a>\n<a href='#company_settings'>- company_settings</a>\n<a href='#currencies'>- currencies</a>\n<a href='#exchange_rates'>- exchange_rates</a>\n<a href='#branches'>- branches</a>\n<a href='#branch_settings'>- branch_settings</a>\n<a href='#roles'>- roles</a>\n<a href='#permissions'>- permissions</a>\n<a href='#role_permissions'>- role_permissions</a>\n<a href='#users'>- users</a>\n<a href='#user_permissions'>- user_permissions</a>\n<a href='#categories'>- categories</a>\n<a href='#products'>- products</a>\n<a href='#modifier_groups'>- modifier_groups</a>\n<a href='#modifier_options'>- modifier_options</a>\n<a href='#product_modifier_mapping'>- product_modifier_mapping</a>\n<a href='#tables'>- tables</a>\n<a href='#table_merges'>- table_merges</a>\n<a href='#customers'>- customers</a>\n<a href='#shifts'>- shifts</a>\n<a href='#shift_cash_movements'>- shift_cash_movements</a>\n<a href='#orders'>- orders</a>\n<a href='#order_items'>- order_items</a>\n<a href='#taxes'>- taxes</a>\n<a href='#order_taxes'>- order_taxes</a>\n<a href='#sales'>- sales</a>\n<a href='#sale_items'>- sale_items</a>\n<a href='#sale_taxes'>- sale_taxes</a>\n<a href='#payment_methods'>- payment_methods</a>\n<a href='#sale_payments'>- sale_payments</a>\n<div class='nav-header'>MVP2 KITCHEN</div>\n<a href='#kds_stations'>- kds_stations</a>\n<a href='#product_station_mapping'>- product_station_mapping</a>\n<a href='#kds_orders'>- kds_orders</a>\n<a href='#printers'>- printers</a>\n<a href='#product_printer_mapping'>- product_printer_mapping</a>\n<a href='#print_jobs'>- print_jobs</a>\n<a href='#ingredients'>- ingredients</a>\n<a href='#ingredient_stocks'>- ingredient_stocks</a>\n<a href='#recipes'>- recipes</a>\n<a href='#modifier_option_recipes'>- modifier_option_recipes</a>\n<a href='#inventory_movements'>- inventory_movements</a>\n<a href='#waste_records'>- waste_records</a>\n<a href='#stock_adjustments'>- stock_adjustments</a>\n<div class='nav-header'>MVP3 SUPPLY</div>\n<a href='#suppliers'>- suppliers</a>\n<a href='#purchase_orders'>- purchase_orders</a>\n<a href='#purchase_order_items'>- purchase_order_items</a>\n<a href='#goods_receipts'>- goods_receipts</a>\n<a href='#goods_receipt_items'>- goods_receipt_items</a>\n<a href='#purchase_returns'>- purchase_returns</a>\n<a href='#supplier_payments'>- supplier_payments</a>\n<a href='#stock_transfers'>- stock_transfers</a>\n<a href='#stock_transfer_items'>- stock_transfer_items</a>\n<div class='nav-header'>MVP4 GROWTH</div>\n<a href='#membership_tiers'>- membership_tiers</a>\n<a href='#customer_memberships'>- customer_memberships</a>\n<a href='#loyalty_transactions'>- loyalty_transactions</a>\n<a href='#customer_credit_transactions'>- customer_credit_transactions</a>\n<a href='#gift_cards'>- gift_cards</a>\n<a href='#gift_card_transactions'>- gift_card_transactions</a>\n<a href='#promotions'>- promotions</a>\n<a href='#promotion_rules'>- promotion_rules</a>\n<a href='#promotion_usages'>- promotion_usages</a>\n<a href='#coupons'>- coupons</a>\n<a href='#coupon_usages'>- coupon_usages</a>\n<a href='#delivery_platforms'>- delivery_platforms</a>\n<a href='#delivery_orders'>- delivery_orders</a>\n<a href='#expense_categories'>- expense_categories</a>\n<a href='#expenses'>- expenses</a>\n<a href='#daily_summary'>- daily_summary</a>\n<a href='#daily_product_summary'>- daily_product_summary</a>\n
+    </div>
+    <div class="content">
+        <h1>Database Schemas Overview</h1>
+        <p style="color: var(--text-secondary); margin-bottom: 40px;">All table schemas broken down by MVP phase.</p>
+        <h2 id='MVP1 CORE' style='margin-top: 50px; border-bottom: 2px solid var(--border); padding-bottom: 10px;'>MVP1 CORE</h2>\n
+                <div class="table-card" id="system_info">
+                    <h3>system_info</h3>
+                    <pre>CREATE TABLE system_info (\n    id INT PRIMARY KEY DEFAULT 1,\n    system_version VARCHAR(50) NOT NULL,\n    database_version VARCHAR(50) NOT NULL,\n    license_key VARCHAR(255),\n    installed_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    updated_at DATETIME NULL ON UPDATE CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="company_settings">
+                    <h3>company_settings</h3>
+                    <pre>CREATE TABLE company_settings (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    setting_key VARCHAR(100) NOT NULL UNIQUE,\n    value TEXT NOT NULL,\n    type VARCHAR(20) NOT NULL DEFAULT 'string',\n    description TEXT,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    updated_by CHAR(36),\n    updated_at DATETIME NULL ON UPDATE CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="currencies">
+                    <h3>currencies</h3>
+                    <pre>CREATE TABLE currencies (\n    code VARCHAR(10) PRIMARY KEY,\n    name VARCHAR(50) NOT NULL,\n    symbol VARCHAR(10) NOT NULL,\n    is_active TINYINT(1) NOT NULL DEFAULT 1,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="exchange_rates">
+                    <h3>exchange_rates</h3>
+                    <pre>CREATE TABLE exchange_rates (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    base_currency VARCHAR(10) NOT NULL,\n    target_currency VARCHAR(10) NOT NULL,\n    rate DECIMAL(15,6) NOT NULL,\n    effective_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    created_by CHAR(36)\n);</pre>
+                </div>
+                
+                <div class="table-card" id="branches">
+                    <h3>branches</h3>
+                    <pre>CREATE TABLE branches (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    name VARCHAR(150) NOT NULL,\n    code VARCHAR(20),\n    address TEXT,\n    city VARCHAR(100),\n    country VARCHAR(100) NOT NULL DEFAULT 'Cambodia',\n    phone VARCHAR(20),\n    email VARCHAR(150),\n    logo_url TEXT,\n    is_active TINYINT(1) NOT NULL DEFAULT 1,\n    created_by CHAR(36),\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    updated_by CHAR(36),\n    updated_at DATETIME NULL ON UPDATE CURRENT_TIMESTAMP,\n    deleted_by CHAR(36),\n    deleted_at DATETIME NULL\n);</pre>
+                </div>
+                
+                <div class="table-card" id="branch_settings">
+                    <h3>branch_settings</h3>
+                    <pre>CREATE TABLE branch_settings (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    branch_id CHAR(36) NOT NULL UNIQUE,\n    receipt_footer TEXT,\n    tax_rate DECIMAL(5,2),\n    default_language VARCHAR(10) NOT NULL DEFAULT 'en',\n    currency_code VARCHAR(10) NOT NULL DEFAULT 'USD',\n    timezone VARCHAR(50) NOT NULL DEFAULT 'Asia/Phnom_Penh',\n    business_hours JSON NOT NULL DEFAULT ('{}'),\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    updated_by CHAR(36),\n    updated_at DATETIME NULL ON UPDATE CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="roles">
+                    <h3>roles</h3>
+                    <pre>CREATE TABLE roles (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    name VARCHAR(50) NOT NULL UNIQUE,\n    display_name VARCHAR(100) NOT NULL,\n    description TEXT,\n    is_active TINYINT(1) NOT NULL DEFAULT 1,\n    created_by CHAR(36),\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    updated_by CHAR(36),\n    updated_at DATETIME NULL ON UPDATE CURRENT_TIMESTAMP,\n    deleted_by CHAR(36),\n    deleted_at DATETIME NULL\n);</pre>
+                </div>
+                
+                <div class="table-card" id="permissions">
+                    <h3>permissions</h3>
+                    <pre>CREATE TABLE permissions (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    name VARCHAR(100) NOT NULL UNIQUE,\n    group_name VARCHAR(50),\n    description TEXT,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="role_permissions">
+                    <h3>role_permissions</h3>
+                    <pre>CREATE TABLE role_permissions (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    role_id CHAR(36) NOT NULL,\n    permission_id CHAR(36) NOT NULL,\n    created_by CHAR(36),\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    UNIQUE(role_id, permission_id)\n);</pre>
+                </div>
+                
+                <div class="table-card" id="users">
+                    <h3>users</h3>
+                    <pre>CREATE TABLE users (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    branch_id CHAR(36),\n    role_id CHAR(36) NOT NULL,\n    username VARCHAR(50) NOT NULL,\n    first_name VARCHAR(75) NOT NULL,\n    last_name VARCHAR(75) NOT NULL,\n    email VARCHAR(150) NOT NULL,\n    phone VARCHAR(20),\n    password_hash VARCHAR(255) NOT NULL,\n    avatar_url TEXT,\n    gender ENUM('male', 'female', 'other'),\n    is_active TINYINT(1) NOT NULL DEFAULT 1,\n    created_by CHAR(36),\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    updated_by CHAR(36),\n    updated_at DATETIME NULL ON UPDATE CURRENT_TIMESTAMP,\n    deleted_by CHAR(36),\n    deleted_at DATETIME NULL\n);</pre>
+                </div>
+                
+                <div class="table-card" id="user_permissions">
+                    <h3>user_permissions</h3>
+                    <pre>CREATE TABLE user_permissions (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    user_id CHAR(36) NOT NULL,\n    permission_id CHAR(36) NOT NULL,\n    created_by CHAR(36),\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    UNIQUE(user_id, permission_id)\n);</pre>
+                </div>
+                
+                <div class="table-card" id="categories">
+                    <h3>categories</h3>
+                    <pre>CREATE TABLE categories (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    branch_id CHAR(36),\n    parent_id CHAR(36),\n    name VARCHAR(100) NOT NULL,\n    name_kh VARCHAR(100),\n    sort_order INT NOT NULL DEFAULT 0,\n    is_active TINYINT(1) NOT NULL DEFAULT 1,\n    created_by CHAR(36),\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    updated_by CHAR(36),\n    updated_at DATETIME NULL ON UPDATE CURRENT_TIMESTAMP,\n    deleted_by CHAR(36),\n    deleted_at DATETIME NULL\n);</pre>
+                </div>
+                
+                <div class="table-card" id="products">
+                    <h3>products</h3>
+                    <pre>CREATE TABLE products (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    branch_id CHAR(36),\n    category_id CHAR(36),\n    name VARCHAR(150) NOT NULL,\n    name_kh VARCHAR(150),\n    sku VARCHAR(100),\n    barcode VARCHAR(100),\n    selling_price DECIMAL(12,2) NOT NULL,\n    is_active TINYINT(1) NOT NULL DEFAULT 1,\n    created_by CHAR(36),\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    updated_by CHAR(36),\n    updated_at DATETIME NULL ON UPDATE CURRENT_TIMESTAMP,\n    deleted_by CHAR(36),\n    deleted_at DATETIME NULL\n);</pre>
+                </div>
+                
+                <div class="table-card" id="modifier_groups">
+                    <h3>modifier_groups</h3>
+                    <pre>CREATE TABLE modifier_groups (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    branch_id CHAR(36),\n    name VARCHAR(50) NOT NULL,\n    min_select INT NOT NULL DEFAULT 0,\n    max_select INT NOT NULL DEFAULT 1,\n    is_active TINYINT(1) NOT NULL DEFAULT 1,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="modifier_options">
+                    <h3>modifier_options</h3>
+                    <pre>CREATE TABLE modifier_options (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    modifier_group_id CHAR(36) NOT NULL,\n    value VARCHAR(100) NOT NULL,\n    price_delta DECIMAL(10,2) NOT NULL DEFAULT 0,\n    is_active TINYINT(1) NOT NULL DEFAULT 1,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="product_modifier_mapping">
+                    <h3>product_modifier_mapping</h3>
+                    <pre>CREATE TABLE product_modifier_mapping (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    product_id CHAR(36) NOT NULL,\n    modifier_group_id CHAR(36) NOT NULL,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    UNIQUE(product_id, modifier_group_id)\n);</pre>
+                </div>
+                
+                <div class="table-card" id="tables">
+                    <h3>tables</h3>
+                    <pre>CREATE TABLE tables (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    branch_id CHAR(36),\n    number VARCHAR(20) NOT NULL,\n    capacity INT NOT NULL DEFAULT 2,\n    status ENUM('available', 'occupied', 'cleaning') NOT NULL DEFAULT 'available',\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="table_merges">
+                    <h3>table_merges</h3>
+                    <pre>CREATE TABLE table_merges (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    primary_table_id CHAR(36) NOT NULL,\n    merged_table_id CHAR(36) NOT NULL,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="customers">
+                    <h3>customers</h3>
+                    <pre>CREATE TABLE customers (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    first_name VARCHAR(75) NOT NULL,\n    last_name VARCHAR(75),\n    phone VARCHAR(20),\n    email VARCHAR(150),\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="shifts">
+                    <h3>shifts</h3>
+                    <pre>CREATE TABLE shifts (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    branch_id CHAR(36),\n    user_id CHAR(36) NOT NULL,\n    opening_cash DECIMAL(12,2) NOT NULL DEFAULT 0,\n    closing_cash DECIMAL(12,2),\n    status ENUM('open', 'closed') NOT NULL DEFAULT 'open',\n    opened_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    closed_at DATETIME\n);</pre>
+                </div>
+                
+                <div class="table-card" id="shift_cash_movements">
+                    <h3>shift_cash_movements</h3>
+                    <pre>CREATE TABLE shift_cash_movements (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    shift_id CHAR(36) NOT NULL,\n    type ENUM('in', 'out') NOT NULL,\n    amount DECIMAL(12,2) NOT NULL,\n    note TEXT,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="orders">
+                    <h3>orders</h3>
+                    <pre>CREATE TABLE orders (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    order_number VARCHAR(30) NOT NULL UNIQUE,\n    branch_id CHAR(36),\n    shift_id CHAR(36),\n    user_id CHAR(36) NOT NULL,\n    customer_id CHAR(36),\n    table_id CHAR(36),\n    parent_order_id CHAR(36),\n    split_type ENUM('none', 'even', 'item') NOT NULL DEFAULT 'none',\n    guest_count INT NOT NULL DEFAULT 1,\n    order_type ENUM('dine_in', 'takeaway', 'delivery', 'drive_thru') NOT NULL DEFAULT 'dine_in',\n    status ENUM('pending', 'confirmed', 'preparing', 'ready', 'completed', 'cancelled', 'voided') NOT NULL DEFAULT 'pending',\n    subtotal DECIMAL(12,2) NOT NULL DEFAULT 0,\n    tax_amount DECIMAL(12,2) NOT NULL DEFAULT 0,\n    total DECIMAL(12,2) NOT NULL DEFAULT 0,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="order_items">
+                    <h3>order_items</h3>
+                    <pre>CREATE TABLE order_items (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    order_id CHAR(36) NOT NULL,\n    product_id CHAR(36),\n    product_name VARCHAR(150) NOT NULL,\n    quantity INT NOT NULL DEFAULT 1,\n    unit_price DECIMAL(10,2) NOT NULL,\n    line_total DECIMAL(12,2) NOT NULL DEFAULT 0,\n    selected_modifiers JSON NOT NULL DEFAULT ('[]'),\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="taxes">
+                    <h3>taxes</h3>
+                    <pre>CREATE TABLE taxes (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    branch_id CHAR(36),\n    name VARCHAR(50) NOT NULL,\n    rate DECIMAL(5,2) NOT NULL,\n    type ENUM('exclusive', 'inclusive') NOT NULL DEFAULT 'exclusive',\n    applies_to ENUM('all', 'dine_in', 'takeaway', 'delivery') NOT NULL DEFAULT 'all',\n    is_active TINYINT(1) NOT NULL DEFAULT 1,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="order_taxes">
+                    <h3>order_taxes</h3>
+                    <pre>CREATE TABLE order_taxes (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    order_id CHAR(36) NOT NULL,\n    tax_name VARCHAR(50) NOT NULL,\n    rate DECIMAL(5,2) NOT NULL,\n    type VARCHAR(20) NOT NULL,\n    amount DECIMAL(12,2) NOT NULL,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="sales">
+                    <h3>sales</h3>
+                    <pre>CREATE TABLE sales (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    sale_number VARCHAR(30) NOT NULL UNIQUE,\n    order_id CHAR(36) NOT NULL,\n    branch_id CHAR(36),\n    shift_id CHAR(36),\n    user_id CHAR(36) NOT NULL,\n    customer_id CHAR(36),\n    subtotal DECIMAL(12,2) NOT NULL,\n    tax_amount DECIMAL(12,2) NOT NULL DEFAULT 0,\n    total DECIMAL(12,2) NOT NULL,\n    sale_date DATE NOT NULL,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="sale_items">
+                    <h3>sale_items</h3>
+                    <pre>CREATE TABLE sale_items (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    sale_id CHAR(36) NOT NULL,\n    product_id CHAR(36),\n    product_name VARCHAR(150) NOT NULL,\n    quantity INT NOT NULL,\n    unit_price DECIMAL(10,2) NOT NULL,\n    line_total DECIMAL(12,2) NOT NULL,\n    selected_modifiers JSON NOT NULL DEFAULT ('[]'),\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="sale_taxes">
+                    <h3>sale_taxes</h3>
+                    <pre>CREATE TABLE sale_taxes (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    sale_id CHAR(36) NOT NULL,\n    tax_name VARCHAR(50) NOT NULL,\n    rate DECIMAL(5,2) NOT NULL,\n    type VARCHAR(20) NOT NULL,\n    amount DECIMAL(12,2) NOT NULL,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="payment_methods">
+                    <h3>payment_methods</h3>
+                    <pre>CREATE TABLE payment_methods (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    branch_id CHAR(36),\n    name VARCHAR(100) NOT NULL,\n    type ENUM('cash', 'card', 'qr', 'ewallet', 'credit', 'gift_card', 'bank_transfer') NOT NULL DEFAULT 'cash',\n    is_active TINYINT(1) NOT NULL DEFAULT 1,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="sale_payments">
+                    <h3>sale_payments</h3>
+                    <pre>CREATE TABLE sale_payments (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    sale_id CHAR(36) NOT NULL,\n    payment_method_id CHAR(36) NOT NULL,\n    amount DECIMAL(12,2) NOT NULL,\n    amount_tendered DECIMAL(12,2),\n    change_amount DECIMAL(12,2) NOT NULL DEFAULT 0,\n    currency_code VARCHAR(10) NOT NULL DEFAULT 'USD',\n    exchange_rate DECIMAL(10,4) NOT NULL DEFAULT 1,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                <h2 id='MVP2 KITCHEN' style='margin-top: 50px; border-bottom: 2px solid var(--border); padding-bottom: 10px;'>MVP2 KITCHEN</h2>\n
+                <div class="table-card" id="kds_stations">
+                    <h3>kds_stations</h3>
+                    <pre>CREATE TABLE kds_stations (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    branch_id CHAR(36),\n    name VARCHAR(50) NOT NULL,\n    is_active TINYINT(1) NOT NULL DEFAULT 1,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="product_station_mapping">
+                    <h3>product_station_mapping</h3>
+                    <pre>CREATE TABLE product_station_mapping (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    product_id CHAR(36) NOT NULL,\n    station_id CHAR(36) NOT NULL,\n    UNIQUE(product_id, station_id)\n);</pre>
+                </div>
+                
+                <div class="table-card" id="kds_orders">
+                    <h3>kds_orders</h3>
+                    <pre>CREATE TABLE kds_orders (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    station_id CHAR(36) NOT NULL,\n    order_id CHAR(36) NOT NULL,\n    status ENUM('new', 'in_progress', 'ready', 'served') NOT NULL DEFAULT 'new',\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="printers">
+                    <h3>printers</h3>
+                    <pre>CREATE TABLE printers (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    branch_id CHAR(36),\n    name VARCHAR(100) NOT NULL,\n    type ENUM('receipt', 'kitchen', 'label') NOT NULL,\n    connection ENUM('usb', 'network', 'bluetooth') NOT NULL,\n    address VARCHAR(100),\n    is_active TINYINT(1) NOT NULL DEFAULT 1,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="product_printer_mapping">
+                    <h3>product_printer_mapping</h3>
+                    <pre>CREATE TABLE product_printer_mapping (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    product_id CHAR(36) NOT NULL,\n    printer_id CHAR(36) NOT NULL,\n    UNIQUE(product_id, printer_id)\n);</pre>
+                </div>
+                
+                <div class="table-card" id="print_jobs">
+                    <h3>print_jobs</h3>
+                    <pre>CREATE TABLE print_jobs (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    branch_id CHAR(36) NOT NULL,\n    order_id CHAR(36),\n    printer_id CHAR(36),\n    print_type VARCHAR(50) NOT NULL,\n    printed_at DATETIME,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="ingredients">
+                    <h3>ingredients</h3>
+                    <pre>CREATE TABLE ingredients (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    branch_id CHAR(36),\n    name VARCHAR(150) NOT NULL,\n    unit VARCHAR(30) NOT NULL,\n    cost_per_unit DECIMAL(10,2) NOT NULL DEFAULT 0,\n    supplier_id CHAR(36),\n    is_active TINYINT(1) NOT NULL DEFAULT 1,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="ingredient_stocks">
+                    <h3>ingredient_stocks</h3>
+                    <pre>CREATE TABLE ingredient_stocks (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    ingredient_id CHAR(36) NOT NULL,\n    branch_id CHAR(36) NOT NULL,\n    quantity DECIMAL(12,3) NOT NULL DEFAULT 0,\n    low_stock_threshold DECIMAL(12,3) NOT NULL DEFAULT 0,\n    reorder_qty DECIMAL(12,3) NOT NULL DEFAULT 0,\n    UNIQUE(ingredient_id, branch_id)\n);</pre>
+                </div>
+                
+                <div class="table-card" id="recipes">
+                    <h3>recipes</h3>
+                    <pre>CREATE TABLE recipes (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    product_id CHAR(36) NOT NULL,\n    ingredient_id CHAR(36) NOT NULL,\n    quantity_used DECIMAL(12,3) NOT NULL,\n    unit VARCHAR(30) NOT NULL,\n    UNIQUE(product_id, ingredient_id)\n);</pre>
+                </div>
+                
+                <div class="table-card" id="modifier_option_recipes">
+                    <h3>modifier_option_recipes</h3>
+                    <pre>CREATE TABLE modifier_option_recipes (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    modifier_option_id CHAR(36) NOT NULL,\n    ingredient_id CHAR(36) NOT NULL,\n    quantity_used DECIMAL(12,3) NOT NULL,\n    unit VARCHAR(30) NOT NULL,\n    UNIQUE(modifier_option_id, ingredient_id)\n);</pre>
+                </div>
+                
+                <div class="table-card" id="inventory_movements">
+                    <h3>inventory_movements</h3>
+                    <pre>CREATE TABLE inventory_movements (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    branch_id CHAR(36),\n    ingredient_id CHAR(36) NOT NULL,\n    type ENUM('purchase', 'sale', 'adjustment', 'waste', 'transfer_in', 'transfer_out', 'return', 'production') NOT NULL,\n    reference_type VARCHAR(30),\n    reference_id CHAR(36),\n    qty_before DECIMAL(12,3) NOT NULL,\n    qty_change DECIMAL(12,3) NOT NULL,\n    qty_after DECIMAL(12,3) NOT NULL,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="waste_records">
+                    <h3>waste_records</h3>
+                    <pre>CREATE TABLE waste_records (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    branch_id CHAR(36),\n    ingredient_id CHAR(36) NOT NULL,\n    quantity DECIMAL(12,3) NOT NULL,\n    unit VARCHAR(30) NOT NULL,\n    reason ENUM('expired', 'spilled', 'overcooked', 'damaged', 'other') NOT NULL,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="stock_adjustments">
+                    <h3>stock_adjustments</h3>
+                    <pre>CREATE TABLE stock_adjustments (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    branch_id CHAR(36),\n    ingredient_id CHAR(36) NOT NULL,\n    qty_before DECIMAL(12,3) NOT NULL,\n    delta_qty DECIMAL(12,3) NOT NULL,\n    qty_after DECIMAL(12,3) NOT NULL,\n    reason VARCHAR(150),\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                <h2 id='MVP3 SUPPLY' style='margin-top: 50px; border-bottom: 2px solid var(--border); padding-bottom: 10px;'>MVP3 SUPPLY</h2>\n
+                <div class="table-card" id="suppliers">
+                    <h3>suppliers</h3>
+                    <pre>CREATE TABLE suppliers (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    name VARCHAR(150) NOT NULL,\n    contact_name VARCHAR(150),\n    phone VARCHAR(20),\n    is_active TINYINT(1) NOT NULL DEFAULT 1,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="purchase_orders">
+                    <h3>purchase_orders</h3>
+                    <pre>CREATE TABLE purchase_orders (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    po_number VARCHAR(30) NOT NULL UNIQUE,\n    branch_id CHAR(36),\n    supplier_id CHAR(36) NOT NULL,\n    status ENUM('draft', 'sent', 'partial', 'received', 'cancelled') NOT NULL DEFAULT 'draft',\n    total DECIMAL(12,2) NOT NULL DEFAULT 0,\n    expected_date DATE,\n    ordered_at DATETIME,\n    received_at DATETIME,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="purchase_order_items">
+                    <h3>purchase_order_items</h3>
+                    <pre>CREATE TABLE purchase_order_items (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    purchase_order_id CHAR(36) NOT NULL,\n    ingredient_id CHAR(36) NOT NULL,\n    quantity_ordered DECIMAL(12,3) NOT NULL,\n    quantity_received DECIMAL(12,3) NOT NULL DEFAULT 0,\n    unit_cost DECIMAL(10,2) NOT NULL,\n    line_total DECIMAL(12,2) NOT NULL DEFAULT 0\n);</pre>
+                </div>
+                
+                <div class="table-card" id="goods_receipts">
+                    <h3>goods_receipts</h3>
+                    <pre>CREATE TABLE goods_receipts (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    gr_number VARCHAR(30) NOT NULL UNIQUE,\n    purchase_order_id CHAR(36),\n    branch_id CHAR(36),\n    supplier_id CHAR(36) NOT NULL,\n    received_date DATE NOT NULL,\n    status ENUM('draft', 'confirmed', 'cancelled') NOT NULL DEFAULT 'draft',\n    confirmed_at DATETIME,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="goods_receipt_items">
+                    <h3>goods_receipt_items</h3>
+                    <pre>CREATE TABLE goods_receipt_items (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    goods_receipt_id CHAR(36) NOT NULL,\n    ingredient_id CHAR(36) NOT NULL,\n    quantity DECIMAL(12,3) NOT NULL,\n    unit_cost DECIMAL(10,2) NOT NULL DEFAULT 0,\n    line_total DECIMAL(12,2) NOT NULL DEFAULT 0\n);</pre>
+                </div>
+                
+                <div class="table-card" id="purchase_returns">
+                    <h3>purchase_returns</h3>
+                    <pre>CREATE TABLE purchase_returns (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    purchase_order_id CHAR(36),\n    supplier_id CHAR(36) NOT NULL,\n    ingredient_id CHAR(36) NOT NULL,\n    quantity DECIMAL(12,3) NOT NULL,\n    unit_cost DECIMAL(10,2) NOT NULL DEFAULT 0,\n    reason TEXT,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="supplier_payments">
+                    <h3>supplier_payments</h3>
+                    <pre>CREATE TABLE supplier_payments (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    purchase_order_id CHAR(36) NOT NULL,\n    supplier_id CHAR(36) NOT NULL,\n    amount DECIMAL(12,2) NOT NULL,\n    payment_method VARCHAR(50) NOT NULL,\n    payment_date DATE NOT NULL,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="stock_transfers">
+                    <h3>stock_transfers</h3>
+                    <pre>CREATE TABLE stock_transfers (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    transfer_no VARCHAR(50) NOT NULL UNIQUE,\n    from_branch_id CHAR(36) NOT NULL,\n    to_branch_id CHAR(36) NOT NULL,\n    transfer_date DATE NOT NULL,\n    status ENUM('pending', 'in_transit', 'received', 'cancelled') NOT NULL DEFAULT 'pending',\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="stock_transfer_items">
+                    <h3>stock_transfer_items</h3>
+                    <pre>CREATE TABLE stock_transfer_items (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    stock_transfer_id CHAR(36) NOT NULL,\n    ingredient_id CHAR(36) NOT NULL,\n    quantity DECIMAL(12,3) NOT NULL\n);</pre>
+                </div>
+                <h2 id='MVP4 GROWTH' style='margin-top: 50px; border-bottom: 2px solid var(--border); padding-bottom: 10px;'>MVP4 GROWTH</h2>\n
+                <div class="table-card" id="membership_tiers">
+                    <h3>membership_tiers</h3>
+                    <pre>CREATE TABLE membership_tiers (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    name VARCHAR(50) NOT NULL UNIQUE,\n    display_name VARCHAR(100) NOT NULL,\n    min_points INT NOT NULL DEFAULT 0,\n    discount_percent DECIMAL(5,2) NOT NULL DEFAULT 0,\n    is_active TINYINT(1) NOT NULL DEFAULT 1,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="customer_memberships">
+                    <h3>customer_memberships</h3>
+                    <pre>CREATE TABLE customer_memberships (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    customer_id CHAR(36) NOT NULL,\n    tier_id CHAR(36) NOT NULL,\n    joined_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n    expires_at DATETIME,\n    is_active TINYINT(1) NOT NULL DEFAULT 1\n);</pre>
+                </div>
+                
+                <div class="table-card" id="loyalty_transactions">
+                    <h3>loyalty_transactions</h3>
+                    <pre>CREATE TABLE loyalty_transactions (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    customer_id CHAR(36) NOT NULL,\n    order_id CHAR(36),\n    points_delta INT NOT NULL,\n    balance_after INT NOT NULL,\n    type ENUM('earn', 'redeem', 'adjust', 'expire', 'refund') NOT NULL,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="customer_credit_transactions">
+                    <h3>customer_credit_transactions</h3>
+                    <pre>CREATE TABLE customer_credit_transactions (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    customer_id CHAR(36) NOT NULL,\n    order_id CHAR(36),\n    amount_delta DECIMAL(12,2) NOT NULL,\n    balance_after DECIMAL(12,2) NOT NULL,\n    type ENUM('top_up', 'redemption', 'refund', 'adjust', 'expire') NOT NULL,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="gift_cards">
+                    <h3>gift_cards</h3>
+                    <pre>CREATE TABLE gift_cards (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    branch_id CHAR(36),\n    code VARCHAR(50) NOT NULL UNIQUE,\n    initial_amount DECIMAL(12,2) NOT NULL,\n    balance DECIMAL(12,2) NOT NULL,\n    status ENUM('active', 'depleted', 'expired', 'voided') NOT NULL DEFAULT 'active',\n    expires_at DATETIME,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="gift_card_transactions">
+                    <h3>gift_card_transactions</h3>
+                    <pre>CREATE TABLE gift_card_transactions (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    gift_card_id CHAR(36) NOT NULL,\n    order_id CHAR(36),\n    amount_delta DECIMAL(12,2) NOT NULL,\n    balance_after DECIMAL(12,2) NOT NULL,\n    type ENUM('purchase', 'redemption', 'refund', 'void') NOT NULL,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="promotions">
+                    <h3>promotions</h3>
+                    <pre>CREATE TABLE promotions (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    branch_id CHAR(36),\n    name VARCHAR(100) NOT NULL,\n    type ENUM('buy_x_get_y', 'happy_hour', 'discount_item', 'combo', 'free_item') NOT NULL,\n    is_active TINYINT(1) NOT NULL DEFAULT 1,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="promotion_rules">
+                    <h3>promotion_rules</h3>
+                    <pre>CREATE TABLE promotion_rules (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    promotion_id CHAR(36) NOT NULL,\n    rule_type VARCHAR(30) NOT NULL,\n    target_type ENUM('product', 'category', 'order'),\n    target_id CHAR(36),\n    quantity INT,\n    discount_pct DECIMAL(5,2),\n    discount_fixed DECIMAL(12,2),\n    free_product_id CHAR(36),\n    free_quantity INT\n);</pre>
+                </div>
+                
+                <div class="table-card" id="promotion_usages">
+                    <h3>promotion_usages</h3>
+                    <pre>CREATE TABLE promotion_usages (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    promotion_id CHAR(36) NOT NULL,\n    order_id CHAR(36),\n    customer_id CHAR(36),\n    discount_amount DECIMAL(12,2) NOT NULL DEFAULT 0,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="coupons">
+                    <h3>coupons</h3>
+                    <pre>CREATE TABLE coupons (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    branch_id CHAR(36),\n    code VARCHAR(50) NOT NULL,\n    type ENUM('percent', 'fixed') NOT NULL,\n    value DECIMAL(10,2) NOT NULL,\n    is_active TINYINT(1) NOT NULL DEFAULT 1,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="coupon_usages">
+                    <h3>coupon_usages</h3>
+                    <pre>CREATE TABLE coupon_usages (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    coupon_id CHAR(36) NOT NULL,\n    order_id CHAR(36),\n    customer_id CHAR(36),\n    discount_amount DECIMAL(10,2) NOT NULL,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="delivery_platforms">
+                    <h3>delivery_platforms</h3>
+                    <pre>CREATE TABLE delivery_platforms (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    branch_id CHAR(36),\n    name VARCHAR(100) NOT NULL,\n    commission_pct DECIMAL(5,2) NOT NULL DEFAULT 0,\n    is_active TINYINT(1) NOT NULL DEFAULT 1,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="delivery_orders">
+                    <h3>delivery_orders</h3>
+                    <pre>CREATE TABLE delivery_orders (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    branch_id CHAR(36),\n    order_id CHAR(36),\n    platform_id CHAR(36),\n    platform_order_id VARCHAR(100),\n    driver_name VARCHAR(100),\n    driver_phone VARCHAR(20),\n    delivery_fee DECIMAL(10,2) NOT NULL DEFAULT 0,\n    status ENUM('pending', 'confirmed', 'preparing', 'ready', 'picked_up', 'delivered', 'cancelled') NOT NULL DEFAULT 'pending',\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="expense_categories">
+                    <h3>expense_categories</h3>
+                    <pre>CREATE TABLE expense_categories (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    name VARCHAR(100) NOT NULL UNIQUE,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="expenses">
+                    <h3>expenses</h3>
+                    <pre>CREATE TABLE expenses (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    branch_id CHAR(36),\n    category_id CHAR(36) NOT NULL,\n    shift_id CHAR(36),\n    amount DECIMAL(12,2) NOT NULL,\n    expense_date DATE NOT NULL,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);</pre>
+                </div>
+                
+                <div class="table-card" id="daily_summary">
+                    <h3>daily_summary</h3>
+                    <pre>CREATE TABLE daily_summary (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    branch_id CHAR(36) NOT NULL,\n    summary_date DATE NOT NULL,\n    total_orders INT NOT NULL DEFAULT 0,\n    total_sales DECIMAL(14,2) NOT NULL DEFAULT 0,\n    UNIQUE(branch_id, summary_date)\n);</pre>
+                </div>
+                
+                <div class="table-card" id="daily_product_summary">
+                    <h3>daily_product_summary</h3>
+                    <pre>CREATE TABLE daily_product_summary (\n    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),\n    branch_id CHAR(36) NOT NULL,\n    summary_date DATE NOT NULL,\n    product_id CHAR(36),\n    qty_sold INT NOT NULL DEFAULT 0,\n    total_revenue DECIMAL(14,2) NOT NULL DEFAULT 0,\n    UNIQUE(branch_id, summary_date, product_id)\n);</pre>
+                </div>
+                
+    </div>
+</body>
+</html>

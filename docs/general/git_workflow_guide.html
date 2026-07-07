@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git Flow & Team Strategy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --surface-light: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #3b82f6;
+            --accent-success: #10b981;
+            --accent-warning: #f59e0b;
+            --accent-danger: #ef4444;
+            --accent-purple: #8b5cf6;
+            --border: #334155;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.7;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            margin-bottom: 10px;
+        }
+
+        h1 span { color: var(--accent); }
+
+        p.subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        .card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--surface-light);
+        }
+
+        .card-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+        .dot.blue { background-color: var(--accent); }
+        .dot.green { background-color: var(--accent-success); }
+        .dot.purple { background-color: var(--accent-purple); }
+        .dot.red { background-color: var(--accent-danger); }
+
+        .branch-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .branch-box {
+            background-color: var(--surface-light);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .branch-box.main { border-left-color: var(--accent-danger); }
+        .branch-box.develop { border-left-color: var(--accent-success); }
+        .branch-box.feature { border-left-color: var(--accent-purple); }
+
+        .branch-name {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        pre {
+            background-color: #0b1120;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            color: #38bdf8;
+            overflow-x: auto;
+            margin: 15px 0;
+            border: 1px solid var(--border);
+        }
+
+        .comment { color: #64748b; }
+        .command { color: #e2e8f0; }
+
+        .step-list {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+
+        .step-list li {
+            position: relative;
+            padding-left: 50px;
+            margin-bottom: 30px;
+        }
+
+        .step-list li::before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 32px;
+            height: 32px;
+            background-color: var(--accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .step-list h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .alert {
+            background-color: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid var(--accent-danger);
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        
+        .alert strong {
+            color: var(--accent-danger);
+        }
+
+        .workflow-diagram {
+            background-color: #0b1120;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            font-family: 'Fira Code', monospace;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            line-height: 2;
+        }
+        .diagram-main { color: var(--accent-danger); font-weight: bold; }
+        .diagram-dev { color: var(--accent-success); font-weight: bold; }
+        .diagram-feat { color: var(--accent-purple); font-weight: bold; }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Professional <span>Git Flow</span> Strategy</h1>
+            <p class="subtitle">Standard Operating Procedure for 2-Developer Teams</p>
+        </header>
+
+        <div class="alert">
+            <strong>⚠️ CRITICAL RULE:</strong> Never push or commit directly to the <code>main</code> or <code>develop</code> branches. All code must be written in a <code>feature/</code> branch and merged via GitHub Pull Requests.
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="dot red"></div>
+                <h2>1. The Core Branches</h2>
+            </div>
+            <p style="margin-bottom: 20px;">Your repository should only have two permanent, long-living branches. All other branches are temporary.</p>
+            
+            <div class="branch-grid">
+                <div class="branch-box main">
+                    <span class="branch-name">main</span>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">The Production Branch. This code is what runs on the live server. It must always be 100% stable and working.</p>
+                </div>
+                <div class="branch-box develop">
+                    <span class="branch-name">develop</span>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">The Integration Branch. Both developers merge their finished features here. This is used for staging and testing the MVP.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="dot blue"></div>
+                <h2>2. The Daily Developer Workflow</h2>
+            </div>
+            
+            <ul class="step-list">
+                <li>
+                    <h3>Sync with the Team</h3>
+                    <p class="comment">Always start your day by pulling the latest code that your teammate merged into develop.</p>
+<pre>
+<span class="command">git checkout develop</span>
+<span class="command">git pull origin develop</span>
+</pre>
+                </li>
+                <li>
+                    <h3>Create a Feature Branch</h3>
+                    <p class="comment">Create a temporary branch just for the specific task you are working on.</p>
+<pre>
+<span class="comment"># Naming convention: feature/name-of-task</span>
+<span class="command">git checkout -b feature/catalog-api</span>
+</pre>
+                </li>
+                <li>
+                    <h3>Write Code & Commit</h3>
+                    <p class="comment">Write your code, save your files, and commit your work regularly.</p>
+<pre>
+<span class="command">git add .</span>
+<span class="command">git commit -m "feat: added catalog and products api endpoints"</span>
+</pre>
+                </li>
+                <li>
+                    <h3>Push to GitHub</h3>
+                    <p class="comment">Send your completed feature branch to the remote repository.</p>
+<pre>
+<span class="command">git push -u origin feature/catalog-api</span>
+</pre>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="dot purple"></div>
+                <h2>3. Code Review & Merging (GitHub)</h2>
+            </div>
+            <p>Once you push your feature branch, you <strong>must not</strong> merge it from your terminal. Follow this process:</p>
+            <br>
+            <ol style="padding-left: 20px; color: var(--text-secondary); line-height: 2;">
+                <li>Developer A logs into <strong>GitHub.com</strong>.</li>
+                <li>Clicks the green <strong>"Compare & pull request"</strong> button for their new branch.</li>
+                <li>Sets the <em>Base branch</em> to <strong style="color: var(--accent-success);">develop</strong> (not main).</li>
+                <li>Developer B gets notified, reviews the code changes on GitHub, and clicks <strong>"Approve"</strong>.</li>
+                <li>Developer A clicks <strong>"Merge pull request"</strong>.</li>
+                <li>Developer A deletes the temporary feature branch from GitHub.</li>
+            </ol>
+            
+            <div class="workflow-diagram" style="margin-top: 30px;">
+                <span class="diagram-main">main</span>    ────────────────────────────────────────────────────(*Release v1.0)──<br>
+                                                                    /<br>
+                <span class="diagram-dev">develop</span> ───(*)───────(*)────────(*)────────(*)────────(*)<br>
+                             \      /         \      /         \<br>
+                <span class="diagram-feat">feature</span>       \____/           \____/           \... (PRs)
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

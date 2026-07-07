@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backend MVP 4 - Task List</title>
+    <style>
+        :root {
+            --primary: #F05340; /* Laravel Red */
+            --primary-light: #fbeee9;
+            --secondary: #1E293B;
+            --accent: #3B82F6;
+            --success: #10B981;
+            --background: #F8FAFC;
+            --surface: #FFFFFF;
+            --text-main: #334155;
+            --text-light: #64748B;
+            --border: #E2E8F0;
+            --radius: 12px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--background);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: var(--secondary);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .phase-card {
+            background-color: var(--surface);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border);
+            border-top: 5px solid var(--primary);
+        }
+
+        .phase-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .phase-header h2 {
+            color: var(--secondary);
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .phase-desc {
+            color: var(--text-light);
+            font-style: italic;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .task-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px 0;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .checkbox {
+            margin-right: 15px;
+            margin-top: 5px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--success);
+        }
+
+        .task-content {
+            flex: 1;
+        }
+
+        .task-title {
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .task-details {
+            color: var(--text-main);
+            font-size: 0.95rem;
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .task-details li {
+            margin-bottom: 4px;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .code-snippet {
+            background-color: #F1F5F9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #EF4444;
+            font-size: 0.9em;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>🚀 Backend MVP 4 Roadmap</h1>
+            <p class="subtitle">Growth & Analytics</p>
+        </header>
+
+        <!-- Phase 1 -->
+        <div class="phase-card">
+            <div class="phase-header">
+                <div>
+                    <h2>Phase 1: Loyalty & CRM</h2>
+                    <span class="phase-desc">Retaining customers.</span>
+                </div>
+            </div>
+            <ul class="task-list">
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox">
+                    <div class="task-content">
+                        <div class="badge">Members</div>
+                        <div class="task-title">Task 1: Membership API</div>
+                        <ul class="task-details">
+                            <li>Manage <span class="code-snippet">membership_tiers</span>.</li>
+                            <li>Assign customers to tiers via <span class="code-snippet">customer_memberships</span>.</li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox">
+                    <div class="task-content">
+                        <div class="badge">Points</div>
+                        <div class="task-title">Task 2: Loyalty Points & Store Credit API</div>
+                        <ul class="task-details">
+                            <li>Record <span class="code-snippet">loyalty_transactions</span> (Earn on sale, redeem for discount).</li>
+                            <li>Manage <span class="code-snippet">customer_credit_transactions</span> and <span class="code-snippet">gift_cards</span>.</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Phase 2 -->
+        <div class="phase-card" style="border-top-color: #3B82F6;">
+            <div class="phase-header">
+                <div>
+                    <h2>Phase 2: Marketing & Delivery</h2>
+                    <span class="phase-desc">Driving sales growth.</span>
+                </div>
+            </div>
+            <ul class="task-list">
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox">
+                    <div class="task-content">
+                        <div class="badge">Marketing</div>
+                        <div class="task-title">Task 3: Promotions & Coupons API</div>
+                        <ul class="task-details">
+                            <li>CRUD for <span class="code-snippet">promotions</span> and <span class="code-snippet">promotion_rules</span>.</li>
+                            <li>API to validate and apply <span class="code-snippet">coupons</span> to orders.</li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox">
+                    <div class="task-content">
+                        <div class="badge">Integration</div>
+                        <div class="task-title">Task 4: Delivery Integrations API</div>
+                        <ul class="task-details">
+                            <li>Manage <span class="code-snippet">delivery_platforms</span>.</li>
+                            <li>Webhook endpoints for Grab/FoodPanda to inject <span class="code-snippet">delivery_orders</span>.</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Phase 3 -->
+        <div class="phase-card" style="border-top-color: #10B981;">
+            <div class="phase-header">
+                <div>
+                    <h2>Phase 3: Financial Analytics</h2>
+                    <span class="phase-desc">Deep business intelligence.</span>
+                </div>
+            </div>
+            <ul class="task-list">
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox">
+                    <div class="task-content">
+                        <div class="badge">Tracking</div>
+                        <div class="task-title">Task 5: Expenses API</div>
+                        <ul class="task-details">
+                            <li>Record daily <span class="code-snippet">expenses</span> by <span class="code-snippet">expense_categories</span>.</li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox">
+                    <div class="task-content">
+                        <div class="badge">Reports</div>
+                        <div class="task-title">Task 6: Reporting APIs</div>
+                        <ul class="task-details">
+                            <li><span class="code-snippet">GET /api/v1/reports/daily-summary</span></li>
+                            <li><span class="code-snippet">GET /api/v1/reports/product-sales</span></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</body>
+</html>

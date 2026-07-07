@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Next-Generation POS for Coffee Shops</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --coffee: #4a2f23;
+        --coffee-dark: #2c1b14;
+        --cream: #faf5ee;
+        --cream-deep: #f2e9dc;
+        --gold: #c8933f;
+        --gold-light: #e8b96a;
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --dark: #1c1410;
+        --gray: #6b5f57;
+        --border: #e6dccb;
+        --success: #2e8b57;
+    }
+
+    * { box-sizing: border-box; }
+
+    @media print {
+        * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+        .hero, .final-cta {
+            background: var(--coffee-dark) !important;
+        }
+    }
+
+    body {
+        font-family: 'Outfit', sans-serif;
+        background: var(--cream);
+        color: var(--dark);
+        margin: 0;
+        padding: 0;
+    }
+
+    .proposal-container {
+        max-width: 1160px;
+        width: 100%;
+        margin: 0 auto;
+        background: #fff;
+        overflow: hidden;
+    }
+
+    /* HERO */
+    .hero {
+        background: radial-gradient(120% 160% at 15% -10%, #3a2419 0%, var(--coffee-dark) 55%, #1a100b 100%);
+        color: var(--cream);
+        padding: 70px 50px 60px;
+        text-align: center;
+        position: relative;
+    }
+
+    .hero::after {
+        content: "";
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        height: 6px;
+        background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+    }
+
+    .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.8rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--gold-light);
+        border: 1px solid rgba(232, 185, 106, 0.4);
+        padding: 6px 16px;
+        border-radius: 30px;
+        margin-bottom: 24px;
+    }
+
+    .hero h1 {
+        font-family: 'Fraunces', serif;
+        font-size: 3.1rem;
+        font-weight: 600;
+        line-height: 1.1;
+        margin: 0 0 20px 0;
+        letter-spacing: -0.01em;
+    }
+
+    .hero h1 em {
+        font-style: italic;
+        color: var(--gold-light);
+        font-weight: 500;
+    }
+
+    .hero p.lead {
+        color: #e8dcd0;
+        font-size: 1.15rem;
+        max-width: 640px;
+        margin: 0 auto 36px;
+        line-height: 1.6;
+    }
+
+    .trust-row {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 34px;
+        margin-top: 36px;
+        padding-top: 30px;
+        border-top: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .trust-item {
+        text-align: center;
+    }
+
+    .trust-item .num {
+        font-family: 'Fraunces', serif;
+        font-size: 1.6rem;
+        color: var(--gold-light);
+        font-weight: 600;
+        display: block;
+    }
+
+    .trust-item .label {
+        font-size: 0.8rem;
+        color: #cbb9a8;
+        letter-spacing: 0.03em;
+    }
+
+    /* VALUE PROPS */
+    .value-section {
+        padding: 60px 50px 20px;
+    }
+
+    .value-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+        max-width: 1020px;
+        margin: 0 auto;
+    }
+
+    .value-card {
+        text-align: center;
+        padding: 20px 12px;
+    }
+
+    .value-card .icon-wrap {
+        width: 56px;
+        height: 56px;
+        background: var(--cream-deep);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 16px;
+    }
+
+    .value-card .icon-wrap svg {
+        width: 26px;
+        height: 26px;
+        color: var(--coffee);
+    }
+
+    .value-card h3 {
+        font-size: 1rem;
+        font-weight: 600;
+        margin: 0 0 8px 0;
+    }
+
+    .value-card p {
+        font-size: 0.88rem;
+        color: var(--gray);
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    /* SECTION HEADERS */
+    .section-head {
+        text-align: center;
+        max-width: 640px;
+        margin: 0 auto 44px;
+    }
+
+    .section-head .kicker {
+        font-size: 0.78rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--gold);
+        font-weight: 600;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .section-head h2 {
+        font-family: 'Fraunces', serif;
+        font-size: 2.1rem;
+        font-weight: 600;
+        margin: 0 0 12px 0;
+        color: var(--coffee-dark);
+    }
+
+    .section-head p {
+        color: var(--gray);
+        font-size: 1rem;
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    /* PRICING */
+    .pricing-section {
+        padding: 70px 50px;
+        background: var(--cream-deep);
+    }
+
+    .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .pricing-card {
+        background: white;
+        border: 2px solid var(--border);
+        border-radius: 20px;
+        padding: 40px 34px;
+        text-align: center;
+        position: relative;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .pricing-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 24px 40px -12px rgba(74, 47, 35, 0.18);
+    }
+
+    .pricing-card.popular {
+        border-color: var(--gold);
+        box-shadow: 0 20px 30px -10px rgba(200, 147, 63, 0.2);
+    }
+
+    .popular-badge {
+        position: absolute;
+        top: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(90deg, var(--gold), var(--gold-light));
+        color: #2c1b14;
+        padding: 7px 18px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+    }
+
+    .savings-badge {
+        display: inline-block;
+        background: rgba(46, 139, 87, 0.1);
+        color: var(--success);
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 4px 12px;
+        border-radius: 20px;
+        margin-bottom: 14px;
+    }
+
+    .plan-name {
+        font-family: 'Fraunces', serif;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: var(--coffee-dark);
+    }
+
+    .plan-tagline {
+        color: var(--gray);
+        font-size: 0.85rem;
+        margin-bottom: 18px;
+    }
+
+    .plan-price {
+        font-size: 3.2rem;
+        font-weight: 700;
+        color: var(--coffee-dark);
+        margin-bottom: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: baseline;
+        font-family: 'Fraunces', serif;
+    }
+
+    .plan-price span {
+        font-size: 1rem;
+        color: var(--gray);
+        font-weight: 400;
+        margin-left: 6px;
+        font-family: 'Outfit', sans-serif;
+    }
+
+    .plan-desc {
+        color: var(--gray);
+        font-size: 0.92rem;
+        margin-bottom: 28px;
+        line-height: 1.5;
+    }
+
+    .feature-list {
+        text-align: left;
+        list-style: none;
+        padding: 0;
+        margin: 0 0 28px 0;
+    }
+
+    .feature-list li {
+        padding: 11px 0;
+        border-bottom: 1px solid var(--border);
+        color: var(--dark);
+        font-size: 0.93rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .feature-list li:last-child { border-bottom: none; }
+
+    .feature-list li svg {
+        width: 18px;
+        height: 18px;
+        color: var(--success);
+        margin-right: 10px;
+        flex-shrink: 0;
+    }
+
+    .cta-btn {
+        display: block;
+        width: 100%;
+        padding: 15px 20px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 0.98rem;
+        text-align: center;
+        cursor: pointer;
+        border: none;
+        transition: opacity 0.2s ease;
+        font-family: 'Outfit', sans-serif;
+    }
+
+    .cta-btn:hover { opacity: 0.9; }
+
+    .cta-btn.primary {
+        background: var(--coffee-dark);
+        color: white;
+    }
+
+    .cta-btn.gold {
+        background: linear-gradient(90deg, var(--gold), var(--gold-light));
+        color: #2c1b14;
+    }
+
+    /* HARDWARE */
+    .hardware-section {
+        padding: 70px 50px;
+    }
+
+    .hardware-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 22px;
+        max-width: 1020px;
+        margin: 0 auto;
+    }
+
+    .hw-item {
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 24px;
+        text-align: center;
+        box-shadow: 0 6px 16px -6px rgba(74, 47, 35, 0.08);
+        transition: transform 0.2s ease;
+    }
+
+    .hw-item:hover { transform: translateY(-4px); }
+
+    .hw-image {
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+        background: var(--cream-deep);
+        border-radius: 10px;
+    }
+
+    .hw-image img { max-height: 110px; max-width: 100%; border-radius: 4px; }
+
+    .hw-price {
+        font-size: 1.7rem;
+        font-weight: 700;
+        color: var(--coffee);
+        margin: 8px 0;
+        font-family: 'Fraunces', serif;
+    }
+
+    .hw-title {
+        font-weight: 600;
+        font-size: 1.05rem;
+        margin-bottom: 10px;
+    }
+
+    .hw-specs {
+        color: var(--gray);
+        font-size: 0.85rem;
+        line-height: 1.7;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        text-align: left;
+    }
+
+    .bundle-note {
+        text-align: center;
+        max-width: 700px;
+        margin: 32px auto 0;
+        padding: 18px 24px;
+        background: var(--cream-deep);
+        border-radius: 14px;
+        font-size: 0.92rem;
+        color: var(--gray);
+    }
+
+    .bundle-note b { color: var(--coffee-dark); }
+
+    /* COMPARISON */
+    .comparison-section {
+        padding: 70px 50px;
+        background: var(--cream-deep);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        max-width: 900px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 6px 20px -8px rgba(74, 47, 35, 0.1);
+    }
+
+    th, td {
+        padding: 18px 22px;
+        text-align: center;
+        border-bottom: 1px solid var(--border);
+    }
+
+    th:first-child, td:first-child { text-align: left; font-weight: 500; }
+
+    th {
+        background-color: var(--coffee-dark);
+        color: var(--cream);
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    th.our-pos-col { background-color: var(--coffee); }
+
+    td { font-size: 0.95rem; }
+
+    tr:last-child td { border-bottom: none; }
+
+    .our-pos-col {
+        background-color: rgba(200, 147, 63, 0.08);
+        font-weight: 600;
+        color: var(--coffee-dark);
+    }
+
+    .check { color: var(--success); font-weight: bold; font-size: 1.15rem; }
+
+    /* TESTIMONIAL */
+    .testimonial-section {
+        padding: 70px 50px;
+        text-align: center;
+    }
+
+    .testimonial-quote {
+        font-family: 'Fraunces', serif;
+        font-size: 1.5rem;
+        font-style: italic;
+        font-weight: 500;
+        color: var(--coffee-dark);
+        max-width: 700px;
+        margin: 0 auto 24px;
+        line-height: 1.5;
+    }
+
+    .testimonial-author {
+        font-size: 0.9rem;
+        color: var(--gray);
+    }
+
+    .testimonial-author b { color: var(--dark); }
+
+    /* FINAL CTA */
+    .final-cta {
+        background: radial-gradient(120% 160% at 85% 110%, #3a2419 0%, var(--coffee-dark) 55%, #1a100b 100%);
+        color: var(--cream);
+        text-align: center;
+        padding: 70px 50px;
+    }
+
+    .final-cta h2 {
+        font-family: 'Fraunces', serif;
+        font-size: 2rem;
+        font-weight: 600;
+        margin: 0 0 16px 0;
+    }
+
+    .final-cta p {
+        color: #e8dcd0;
+        max-width: 520px;
+        margin: 0 auto 32px;
+        line-height: 1.6;
+    }
+
+    .final-cta .cta-btn {
+        max-width: 280px;
+        margin: 0 auto;
+    }
+
+    .guarantee-row {
+        display: flex;
+        justify-content: center;
+        gap: 28px;
+        margin-top: 30px;
+        flex-wrap: wrap;
+        font-size: 0.85rem;
+        color: #cbb9a8;
+    }
+
+    .guarantee-row span { display: flex; align-items: center; gap: 6px; }
+
+    @media (max-width: 720px) {
+        .value-grid, .pricing-grid, .hardware-grid { grid-template-columns: 1fr; }
+        .hero h1 { font-size: 2.2rem; }
+        .hero, .pricing-section, .hardware-section, .comparison-section, .testimonial-section, .final-cta, .value-section {
+            padding-left: 24px; padding-right: 24px;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="proposal-container">
+
+    <!-- HERO -->
+    <div class="hero">
+        <span class="eyebrow">☕ Built for Coffee Shops</span>
+        <h1>The POS your <em>baristas</em><br>won't fight with</h1>
+        <p class="lead">A cloud-based point of sale that handles the morning rush, the loyalty regulars, and the end-of-day count — without charging you extra for more staff or more tables.</p>
+
+        <div class="trust-row">
+            <div class="trust-item"><span class="num">Unlimited</span><span class="label">Users & Devices</span></div>
+            <div class="trust-item"><span class="num">Multiple</span><span class="label">Payment Options</span></div>
+            <div class="trust-item"><span class="num">Real-Time</span><span class="label">Order Tracking</span></div>
+            <div class="trust-item"><span class="num">0</span><span class="label">Hidden Fees</span></div>
+        </div>
+    </div>
+
+    <!-- VALUE PROPS -->
+    <div class="value-section">
+        <div class="value-grid">
+            <div class="value-card">
+                <div class="icon-wrap"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-1.13a4 4 0 100-8 4 4 0 000 8zm6 3v-1a4 4 0 00-3-3.87"></path></svg></div>
+                <h3>No Per-Seat Fees</h3>
+                <p>Add staff and tables freely. Growth never triggers a bigger bill.</p>
+            </div>
+            <div class="value-card">
+                <div class="icon-wrap"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
+                <h3>Live Kitchen & QR Tracking</h3>
+                <p>Orders sync instantly to the kitchen display, and customers watch their order move in real time.</p>
+            </div>
+            <div class="value-card">
+                <div class="icon-wrap"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3v-6m-3 6v-1m-4 4h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg></div>
+                <h3>Real Numbers, Daily</h3>
+                <p>Expense and sales tracking that tells you what's actually happening, not just what sold.</p>
+            </div>
+            <div class="value-card">
+                <div class="icon-wrap"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg></div>
+                <h3>Telegram Alerts</h3>
+                <p>Low stock, big sales, or a shift closing out — you hear about it the moment it happens.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRICING -->
+    <div class="pricing-section">
+        <div class="section-head">
+            <span class="kicker">Plans</span>
+            <h2>Pick the way you'd rather pay</h2>
+            <p>Same powerful system either way. Choose a low yearly cost, or buy it outright and never think about renewals again.</p>
+        </div>
+
+        <div class="pricing-grid">
+            <!-- Basic Plan -->
+            <div class="pricing-card">
+                <div class="plan-name">Yearly Cloud</div>
+                <div class="plan-tagline">Best if you want the lowest cost to start</div>
+                <div class="plan-price">$250<span>/year</span></div>
+                <div class="plan-desc">Full access to every cloud feature and update, billed once a year.</div>
+
+                <ul class="feature-list">
+                    <li><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> <b>Unlimited Users & Tables</b></li>
+                    <li><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Ordering, Toppings & Combo Sets</li>
+                    <li><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Multiple Payment Methods & Split Bill</li>
+                    <li><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Shift & Cash Drawer Management</li>
+                    <li><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Stock Inventory (Products & Ingredients)</li>
+                    <li><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Expense Tracking (Daily, Monthly, Yearly)</li>
+                    <li><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Telegram Alerts</li>
+                </ul>
+                <button class="cta-btn primary">Start with Yearly Cloud</button>
+            </div>
+
+            <!-- Pro Plan -->
+            <div class="pricing-card popular">
+                <div class="popular-badge">MOST POPULAR</div>
+                <div class="plan-name">Lifetime Pro</div>
+                <div class="plan-tagline">Best if you want to own it outright</div>
+                <div class="savings-badge">Pays for itself in just 2 years</div>
+                <div class="plan-price">$500<span>one-time</span></div>
+                <div class="plan-desc">No subscriptions, ever. Full perpetual ownership of the software.</div>
+
+                <ul class="feature-list">
+                    <li><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> <b>Everything in Yearly Cloud</b></li>
+                    <li><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> <b>No Yearly Renewal Fees</b></li>
+                    <li><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Kitchen Display System (KDS)</li>
+                    <li><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Live Customer Order Tracking QR</li>
+                    <li><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Digital Menu Integration</li>
+                    <li><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Advanced Promotion & Loyalty Rules</li>
+                    <li><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Comprehensive Sales Reporting</li>
+                </ul>
+                <button class="cta-btn gold">Choose Lifetime Pro</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- HARDWARE -->
+    <div class="hardware-section">
+        <div class="section-head">
+            <span class="kicker">Hardware</span>
+            <h2>Everything the counter needs</h2>
+            <p>Tested, reliable hardware that pairs directly with your new system — no compatibility guesswork.</p>
+        </div>
+        <div class="hardware-grid">
+            <div class="hw-item">
+                <div class="hw-image">
+                    <img src="images/pos.png" alt="Single Screen POS">
+                </div>
+                <div class="hw-title">Single Screen POS</div>
+                <div class="hw-price">$390</div>
+                <ul class="hw-specs">
+                    <li>Model: DTK-SI5</li>
+                    <li>15.6" Touch Screen</li>
+                    <li>CPU Core i5, 8GB RAM, 128GB SSD</li>
+                    <li>Wi-Fi & Bluetooth Built-in</li>
+                </ul>
+            </div>
+            <div class="hw-item">
+                <div class="hw-image">
+                    <img src="images/printer.png" alt="Thermal Receipt Printer">
+                </div>
+                <div class="hw-title">Thermal Receipt Printer</div>
+                <div class="hw-price">$68</div>
+                <ul class="hw-specs">
+                    <li>Xprinter XP-T80Q (80x80mm)</li>
+                    <li>Interface: USB + LAN</li>
+                    <li>High Speed: 200mm/s</li>
+                    <li>Auto-Cutter Included</li>
+                </ul>
+            </div>
+            <div class="hw-item">
+                <div class="hw-image">
+                    <img src="images/drawer.png" alt="Secure Cash Drawer">
+                </div>
+                <div class="hw-title">Secure Cash Drawer</div>
+                <div class="hw-price">$45</div>
+                <ul class="hw-specs">
+                    <li>Model: C405-7</li>
+                    <li>Heavy Duty (5.8 kg)</li>
+                    <li>Auto-open via Printer</li>
+                    <li>Multiple Coin/Bill Trays</li>
+                </ul>
+            </div>
+        </div>
+        <div class="bundle-note">
+            <b>Full counter bundle:</b> POS terminal + printer + cash drawer for $503 — everything you need to open on day one.
+        </div>
+        <div class="bundle-note" style="margin-top: 14px;">
+            Need a different model, an extra unit, or want to swap something out? Let us know and we'll adjust the add-ons to fit your shop.
+        </div>
+    </div>
+
+    <!-- COMPARISON -->
+    <div class="comparison-section">
+        <div class="section-head">
+            <span class="kicker">Comparison</span>
+            <h2>Why shop owners switch</h2>
+            <p>Most POS systems charge more the moment your team or your table count grows. This one doesn't.</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Feature Highlights</th>
+                    <th class="our-pos-col">Our POS System</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>User & Device Limits</td>
+                    <td class="our-pos-col">Unlimited Users/Devices</td>
+                </tr>
+                <tr>
+                    <td>Table Limits</td>
+                    <td class="our-pos-col">Unlimited Tables</td>
+                </tr>
+                <tr>
+                    <td>Modern Cloud Architecture</td>
+                    <td class="our-pos-col"><span class="check">✔</span> Yes (Accessible from anywhere)</td>
+                </tr>
+                <tr>
+                    <td>Live Customer Order Tracking (QR)</td>
+                    <td class="our-pos-col"><span class="check">✔</span> Yes (Included)</td>
+                </tr>
+                <tr>
+                    <td>Kitchen Display System (KDS)</td>
+                    <td class="our-pos-col"><span class="check">✔</span> Advanced KDS Included</td>
+                </tr>
+                <tr>
+                    <td>Annual Maintenance Fees</td>
+                    <td class="our-pos-col"><span class="check">✔</span> Free Updates (1 month after start)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- TESTIMONIAL -->
+    <div class="testimonial-section">
+        <div class="testimonial-quote">"We stopped worrying about adding a new part-timer or a new table — it just works, and the owner sees the numbers from her phone every morning."</div>
+        <div class="testimonial-author"><b>Independent coffee shop</b>, on Yearly Cloud</div>
+    </div>
+
+    <!-- FINAL CTA -->
+    <div class="final-cta">
+        <h2>Ready to see it running on your counter?</h2>
+        <p>We'll set it up, load your menu, and have your team trained before your next morning rush.</p>
+        <button class="cta-btn gold">Book Your Free Setup Call</button>
+        <div class="guarantee-row">
+            <span>✔ Free onboarding</span>
+            <span>✔ Cancel anytime on Yearly Cloud</span>
+            <span>✔ No hidden fees</span>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

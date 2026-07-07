@@ -11,18 +11,7 @@ class OrderItem extends Model
 {
     use HasFactory, HasUuid;
 
-    protected $fillable = [
-        'order_id',
-        'product_id',
-        'product_name', // Snapshot at time of order
-        'quantity',
-        'unit_price',
-        'subtotal',
-        'discount_amount',
-        'line_total',
-        'selected_modifiers', // JSON
-        'notes',
-    ];
+    protected $guarded = ['id'];
 
     protected $casts = [
         'selected_modifiers' => 'array',

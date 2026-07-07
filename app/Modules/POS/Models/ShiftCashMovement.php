@@ -10,12 +10,9 @@ class ShiftCashMovement extends Model
 {
     use HasFactory, HasUuid;
 
-    protected $fillable = [
-        'shift_id',
-        'type', // 'in', 'out'
-        'amount',
-        'note',
-    ];
+    protected $guarded = ['id'];
+    
+    const UPDATED_AT = null;
 
     /**
      * Get the shift this cash movement belongs to.

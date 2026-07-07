@@ -11,12 +11,7 @@ class ModifierOption extends Model
 {
     use HasFactory, HasUuid, SoftDeletes;
 
-    protected $fillable = [
-        'modifier_group_id',
-        'value',
-        'price_delta',
-        'is_active',
-    ];
+    protected $guarded = ['id'];
 
     /**
      * Get the group this option belongs to.

@@ -13,18 +13,7 @@ class Order extends Model
 {
     use HasFactory, HasUuid, SoftDeletes;
 
-    protected $fillable = [
-        'order_number',
-        'branch_id',
-        'shift_id',
-        'user_id',
-        'type', // 'dine_in', 'takeaway'
-        'status', // 'pending', 'completed', 'cancelled'
-        'subtotal',
-        'tax_amount',
-        'discount_amount',
-        'total',
-    ];
+    protected $guarded = ['id'];
 
     /**
      * Get the branch where the order was placed.
@@ -59,10 +48,10 @@ class Order extends Model
     }
 
     /**
-     * Get the payments made for this order.
+     * Get the sale associated with this order.
      */
-    public function payments()
+    public function sale()
     {
-        return $this->hasMany(SalePayment::class);
+        return $this->hasOne(Sale::class);
     }
 }

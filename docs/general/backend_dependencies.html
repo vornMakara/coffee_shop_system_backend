@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backend Dependencies & Architecture</title>
+    <style>
+        :root {
+            --primary: #F05340; /* Laravel Red */
+            --secondary: #2C3E50;
+            --background: #F8FAFC;
+            --surface: #FFFFFF;
+            --text-main: #334155;
+            --text-light: #64748B;
+            --border: #E2E8F0;
+            --radius: 12px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--background);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: var(--secondary);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background-color: var(--surface);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border);
+        }
+
+        .card h2 {
+            color: var(--primary);
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .dependency-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .dependency-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .dependency-item:last-child {
+            border-bottom: none;
+        }
+
+        .dep-name {
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 1.1rem;
+        }
+
+        .dep-version {
+            background-color: #E0E7FF;
+            color: #4338CA;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .dep-desc {
+            display: block;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-top: 5px;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .badge.prod { background-color: #10B981; }
+        .badge.dev { background-color: #F59E0B; }
+        .badge.security { background-color: #EF4444; }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>☕ Coffee Shop POS - Backend Stack</h1>
+            <p class="subtitle">An overview of the libraries, tools, and dependencies powering the Laravel API.</p>
+        </header>
+
+        <!-- Core Architecture -->
+        <div class="card">
+            <h2>Core Framework & Environment</h2>
+            <ul class="dependency-list">
+                <li class="dependency-item">
+                    <div>
+                        <span class="badge prod">Core</span>
+                        <span class="dep-name">Laravel Framework</span>
+                        <span class="dep-desc">The primary PHP framework handling routing, ORM (Eloquent), and business logic.</span>
+                    </div>
+                    <span class="dep-version">^9.19</span>
+                </li>
+                <li class="dependency-item">
+                    <div>
+                        <span class="badge prod">Runtime</span>
+                        <span class="dep-name">PHP</span>
+                        <span class="dep-desc">The server-side scripting language required to run the backend.</span>
+                    </div>
+                    <span class="dep-version">^8.0.2</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Security & Auth -->
+        <div class="card">
+            <h2>Authentication & Security</h2>
+            <ul class="dependency-list">
+                <li class="dependency-item">
+                    <div>
+                        <span class="badge security">Auth</span>
+                        <span class="dep-name">php-open-source-saver/jwt-auth</span>
+                        <span class="dep-desc">Handles JSON Web Token (JWT) generation and validation for secure, stateless API authentication. Replaces Laravel Sanctum.</span>
+                    </div>
+                    <span class="dep-version">Latest</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Production Dependencies -->
+        <div class="card">
+            <h2>Production Libraries</h2>
+            <ul class="dependency-list">
+                <li class="dependency-item">
+                    <div>
+                        <span class="badge prod">HTTP</span>
+                        <span class="dep-name">Guzzle HTTP</span>
+                        <span class="dep-desc">A powerful PHP HTTP client that makes it easy to send outbound requests to third-party services (e.g., payment gateways).</span>
+                    </div>
+                    <span class="dep-version">^7.2</span>
+                </li>
+                <li class="dependency-item">
+                    <div>
+                        <span class="badge prod">CLI</span>
+                        <span class="dep-name">Laravel Tinker</span>
+                        <span class="dep-desc">An interactive REPL command-line interface for interacting with the Laravel application and database.</span>
+                    </div>
+                    <span class="dep-version">^2.7</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Development & Testing -->
+        <div class="card">
+            <h2>Development & Testing (DevOnly)</h2>
+            <ul class="dependency-list">
+                <li class="dependency-item">
+                    <div>
+                        <span class="badge dev">Data</span>
+                        <span class="dep-name">FakerPHP</span>
+                        <span class="dep-desc">Generates fake realistic data (names, prices, coffee names) to populate the database for testing.</span>
+                    </div>
+                    <span class="dep-version">^1.9.1</span>
+                </li>
+                <li class="dependency-item">
+                    <div>
+                        <span class="badge dev">Docker</span>
+                        <span class="dep-name">Laravel Sail</span>
+                        <span class="dep-desc">A light-weight command-line interface for interacting with Laravel's default Docker development environment.</span>
+                    </div>
+                    <span class="dep-version">^1.0.1</span>
+                </li>
+                <li class="dependency-item">
+                    <div>
+                        <span class="badge dev">Testing</span>
+                        <span class="dep-name">PHPUnit</span>
+                        <span class="dep-desc">The standard testing framework for PHP to run unit and feature tests.</span>
+                    </div>
+                    <span class="dep-version">^9.5.10</span>
+                </li>
+                <li class="dependency-item">
+                    <div>
+                        <span class="badge dev">Testing</span>
+                        <span class="dep-name">Mockery</span>
+                        <span class="dep-desc">A simple yet flexible PHP mock object framework for use in unit testing.</span>
+                    </div>
+                    <span class="dep-version">^1.4.4</span>
+                </li>
+                <li class="dependency-item">
+                    <div>
+                        <span class="badge dev">Code Style</span>
+                        <span class="dep-name">Laravel Pint</span>
+                        <span class="dep-desc">An opinionated PHP code style fixer to keep the codebase clean and consistent.</span>
+                    </div>
+                    <span class="dep-version">^1.0</span>
+                </li>
+                <li class="dependency-item">
+                    <div>
+                        <span class="badge dev">Debugging</span>
+                        <span class="dep-name">Spatie Ignition & Collision</span>
+                        <span class="dep-desc">Provides beautiful, readable error pages and console error output when something breaks during development.</span>
+                    </div>
+                    <span class="dep-version">Various</span>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</body>
+</html>

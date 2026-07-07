@@ -13,13 +13,7 @@ class Product extends Model
 {
     use HasFactory, HasUuid, SoftDeletes;
 
-    protected $fillable = [
-        'branch_id',
-        'category_id',
-        'name',
-        'selling_price',
-        'is_active',
-    ];
+    protected $guarded = ['id'];
 
     /**
      * Get the branch this product belongs to.

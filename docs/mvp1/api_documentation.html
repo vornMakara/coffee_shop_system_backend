@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Shop POS API (MVP 1)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-panel: #1e293b;
+            --bg-light: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #3b82f6;
+            --border: #334155;
+            
+            --get-color: #10b981;
+            --get-bg: rgba(16, 185, 129, 0.15);
+            --post-color: #3b82f6;
+            --post-bg: rgba(59, 130, 246, 0.15);
+            --put-color: #f59e0b;
+            --put-bg: rgba(245, 158, 11, 0.15);
+            --delete-color: #ef4444;
+            --delete-bg: rgba(239, 68, 68, 0.15);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 330px;
+            background-color: var(--bg-panel);
+            border-right: 1px solid var(--border);
+            padding: 20px 0;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.2rem;
+            margin: 0;
+            color: var(--text-main);
+        }
+
+        .sidebar-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-nav-group {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin: 20px 20px 10px;
+            font-weight: 600;
+        }
+
+        .sidebar-nav li a {
+            display: flex;
+            align-items: center;
+            padding: 8px 20px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .sidebar-nav li a:hover {
+            color: var(--text-main);
+            background-color: var(--bg-light);
+        }
+
+        .method-badge {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-right: 10px;
+            width: 35px;
+            text-align: center;
+        }
+
+        .badge-get { color: var(--get-color); }
+        .badge-post { color: var(--post-color); }
+        .badge-put { color: var(--put-color); }
+        .badge-delete { color: var(--delete-color); }
+
+        /* Main Content */
+        .main-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 40px;
+            scroll-behavior: smooth;
+        }
+
+        .content-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .module-header {
+            font-size: 2rem;
+            margin-top: 60px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+            color: var(--text-main);
+        }
+
+        /* Endpoint Card */
+        .endpoint {
+            background-color: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 40px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .endpoint-header {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .endpoint.get .endpoint-header { background-color: var(--get-bg); border-bottom-color: rgba(16, 185, 129, 0.3); }
+        .endpoint.post .endpoint-header { background-color: var(--post-bg); border-bottom-color: rgba(59, 130, 246, 0.3); }
+        .endpoint.put .endpoint-header { background-color: var(--put-bg); border-bottom-color: rgba(245, 158, 11, 0.3); }
+        .endpoint.delete .endpoint-header { background-color: var(--delete-bg); border-bottom-color: rgba(239, 68, 68, 0.3); }
+
+        .endpoint-method {
+            font-family: 'Fira Code', monospace;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-right: 15px;
+            text-transform: uppercase;
+        }
+
+        .endpoint.get .endpoint-method { color: var(--get-color); }
+        .endpoint.post .endpoint-method { color: var(--post-color); }
+        .endpoint.put .endpoint-method { color: var(--put-color); }
+        .endpoint.delete .endpoint-method { color: var(--delete-color); }
+
+        .endpoint-path {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.1rem;
+            color: var(--text-main);
+        }
+
+        .endpoint-body {
+            padding: 25px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .endpoint-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .endpoint-title {
+            font-size: 1.3rem;
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            color: var(--text-main);
+            vertical-align: top;
+        }
+
+        .param-name {
+            font-family: 'Fira Code', monospace;
+            color: #7dd3fc;
+            font-weight: 500;
+        }
+
+        .param-required {
+            font-size: 0.7rem;
+            background-color: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 5px;
+        }
+
+        .param-type {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Code Blocks */
+        .code-block-wrapper {
+            background-color: #0b1120;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .code-header {
+            background-color: #1e293b;
+            padding: 8px 15px;
+            font-size: 0.75rem;
+            font-family: 'Fira Code', monospace;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        pre {
+            margin: 0;
+            padding: 15px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: #e2e8f0;
+            overflow-x: auto;
+        }
+
+        /* Syntax Highlighting */
+        .json-key { color: #c792ea; }
+        .json-string { color: #a3be8c; }
+        .json-number { color: #d08770; }
+        .json-boolean { color: #81a1c1; }
+        .json-null { color: #bf616a; }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h1>☕ Coffee Shop POS<br><span style="color: var(--text-muted); font-size: 0.85rem;">API Reference (MVP 1)</span></h1>
+        </div>
+
+        <div class="sidebar-nav">
+            <div class="sidebar-nav-group">Authentication</div>
+            <ul>
+                <li><a href="#auth-login"><span class="method-badge badge-post">POST</span> /auth/login</a></li>
+                <li><a href="#auth-me"><span class="method-badge badge-get">GET</span> /auth/me</a></li>
+                <li><a href="#auth-logout"><span class="method-badge badge-post">POST</span> /auth/logout</a></li>
+            </ul>
+
+            <div class="sidebar-nav-group">POS Core Data</div>
+            <ul>
+                <li><a href="#shifts-current"><span class="method-badge badge-get">GET</span> /shifts/current</a></li>
+                <li><a href="#shifts-open"><span class="method-badge badge-post">POST</span> /shifts/open</a></li>
+                <li><a href="#tables-categories"><span class="method-badge badge-get">GET</span> /tables/categories</a></li>
+                <li><a href="#tables-list"><span class="method-badge badge-get">GET</span> /tables</a></li>
+                <li><a href="#customers-list"><span class="method-badge badge-get">GET</span> /customers</a></li>
+            </ul>
+
+            <div class="sidebar-nav-group">Catalog & Menu</div>
+            <ul>
+                <li><a href="#catalog-categories"><span class="method-badge badge-get">GET</span> /categories</a></li>
+                <li><a href="#catalog-products"><span class="method-badge badge-get">GET</span> /products</a></li>
+            </ul>
+
+            <div class="sidebar-nav-group">Orders</div>
+            <ul>
+                <li><a href="#orders-list"><span class="method-badge badge-get">GET</span> /orders</a></li>
+                <li><a href="#orders-create"><span class="method-badge badge-post">POST</span> /orders</a></li>
+                <li><a href="#orders-pay"><span class="method-badge badge-post">POST</span> /orders/{id}/pay</a></li>
+                <li><a href="#orders-tracking"><span class="method-badge badge-get">GET</span> /orders/{order_number}</a></li>
+                <li><a href="#orders-status"><span class="method-badge badge-put">PATCH</span> /orders/{id}/status</a></li>
+                <li><a href="#orders-delete"><span class="method-badge badge-delete">DEL</span> /orders/{id}</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="content-container">
+            
+            <div class="top-nav" style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; margin-bottom: 30px; border-bottom: 1px solid var(--border);">
+                <p style="font-size: 1.1rem; color: var(--text-muted); margin: 0;">Welcome to the Coffee Shop <strong>POS App</strong> API documentation.</p>
+                <a href="admin_api_documentation.html" style="background-color: var(--accent); color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-size: 0.9rem; font-weight: 500;">View Admin Dashboard API &rarr;</a>
+            </div>
+
+<h2 class="module-header" id="module-auth">Authentication</h2>
+            <div class="endpoint post" id="auth-login">
+                <div class="endpoint-header">
+                    <span class="endpoint-method">POST</span>
+                    <span class="endpoint-path">/api/v1/auth/login</span>
+                </div>
+                <div class="endpoint-body">
+                    <div class="endpoint-info">
+                        <h3 class="endpoint-title">Login Cashier</h3>
+                        <p class="endpoint-desc">Authenticates a cashier using their credentials and returns a JWT token.</p>
+                        <table><tr><th>Parameter</th><th>Description</th></tr><tr><td><span class="param-name">email</span> <span class="param-required">Required</span><br><span class="param-type">string</span></td><td>Cashier email.</td></tr><tr><td><span class="param-name">password</span> <span class="param-required">Required</span><br><span class="param-type">string</span></td><td>Cashier password.</td></tr></table>
+                    </div>
+                    <div class="endpoint-examples">                        <div class="code-block-wrapper">
+                            <div class="code-header">Example Request Body</div>
+                            <pre>{
+  <span class="json-key">"email"</span>: <span class="json-string">"cashier@coffeeshop.com"</span>,
+  <span class="json-key">"password"</span>: <span class="json-string">"secret123"</span>
+}</pre>
+                        </div>                        <div class="code-block-wrapper">
+                            <div class="code-header">Example Response</div>
+                            <pre>{
+  <span class="json-key">"status"</span>: <span class="json-string">"success"</span>,
+  <span class="json-key">"data"</span>: {
+    <span class="json-key">"access_token"</span>: <span class="json-string">"eyJhbGciOi..."</span>,
+    <span class="json-key">"token_type"</span>: <span class="json-string">"bearer"</span>,
+    <span class="json-key">"expires_in"</span>: <span class="json-number">3600</span>
+  }
+}</pre>
+                        </div></div>
+                </div>
+            </div>
+            <div class="endpoint get" id="auth-me">
+                <div class="endpoint-header">
+                    <span class="endpoint-method">GET</span>
+                    <span class="endpoint-path">/api/v1/auth/me</span>
+                </div>
+                <div class="endpoint-body">
+                    <div class="endpoint-info">
+                        <h3 class="endpoint-title">Get Current User</h3>
+                        <p class="endpoint-desc">Retrieves the profile of the currently authenticated cashier.</p>
+                        
+                    </div>
+                    <div class="endpoint-examples">                        <div class="code-block-wrapper">
+                            <div class="code-header">Example Response</div>
+                            <pre>{
+  <span class="json-key">"status"</span>: <span class="json-string">"success"</span>,
+  <span class="json-key">"data"</span>: {
+    <span class="json-key">"id"</span>: <span class="json-string">"uuid"</span>,
+    <span class="json-key">"first_name"</span>: <span class="json-string">"Sarah"</span>,
+    <span class="json-key">"last_name"</span>: <span class="json-string">"Connor"</span>,
+    <span class="json-key">"role"</span>: {<span class="json-key">"name"</span>: <span class="json-string">"Cashier"</span>}
+  }
+}</pre>
+                        </div></div>
+                </div>
+            </div>
+            <div class="endpoint post" id="auth-logout">
+                <div class="endpoint-header">
+                    <span class="endpoint-method">POST</span>
+                    <span class="endpoint-path">/api/v1/auth/logout</span>
+                </div>
+                <div class="endpoint-body">
+                    <div class="endpoint-info">
+                        <h3 class="endpoint-title">Logout</h3>
+                        <p class="endpoint-desc">Invalidates the current JWT token.</p>
+                        
+                    </div>
+                    <div class="endpoint-examples">                        <div class="code-block-wrapper">
+                            <div class="code-header">Example Response</div>
+                            <pre>{
+  <span class="json-key">"status"</span>: <span class="json-string">"success"</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"Successfully logged out"</span>
+}</pre>
+                        </div></div>
+                </div>
+            </div>
+<h2 class="module-header" id="module-pos">POS Core Data</h2>
+            <div class="endpoint get" id="shifts-current">
+                <div class="endpoint-header">
+                    <span class="endpoint-method">GET</span>
+                    <span class="endpoint-path">/api/v1/shifts/current</span>
+                </div>
+                <div class="endpoint-body">
+                    <div class="endpoint-info">
+                        <h3 class="endpoint-title">Get Current Shift</h3>
+                        <p class="endpoint-desc">Checks if the current cashier has an active shift.</p>
+                        
+                    </div>
+                    <div class="endpoint-examples">                        <div class="code-block-wrapper">
+                            <div class="code-header">Example Response</div>
+                            <pre>{
+  <span class="json-key">"status"</span>: <span class="json-string">"success"</span>,
+  <span class="json-key">"data"</span>: {
+    <span class="json-key">"id"</span>: <span class="json-string">"uuid"</span>,
+    <span class="json-key">"opened_at"</span>: <span class="json-string">"2023-10-01 08:00:00"</span>,
+    <span class="json-key">"starting_cash"</span>: <span class="json-number">150.00</span>
+  }
+}</pre>
+                        </div></div>
+                </div>
+            </div>
+            <div class="endpoint post" id="shifts-open">
+                <div class="endpoint-header">
+                    <span class="endpoint-method">POST</span>
+                    <span class="endpoint-path">/api/v1/shifts/open</span>
+                </div>
+                <div class="endpoint-body">
+                    <div class="endpoint-info">
+                        <h3 class="endpoint-title">Open Shift</h3>
+                        <p class="endpoint-desc">Opens the register for the cashier with a starting float.</p>
+                        <table><tr><th>Parameter</th><th>Description</th></tr><tr><td><span class="param-name">opening_cash</span> <span class="param-required">Required</span><br><span class="param-type">number</span></td><td>Starting USD cash in drawer.</td></tr><tr><td><span class="param-name">opening_cash_khr</span> <span class="param-required">Required</span><br><span class="param-type">number</span></td><td>Starting KHR cash in drawer.</td></tr></table>
+                    </div>
+                    <div class="endpoint-examples">                        <div class="code-block-wrapper">
+                            <div class="code-header">Example Request Body</div>
+                            <pre>{
+  <span class="json-key">"opening_cash"</span>: <span class="json-number">150.00</span>,
+  <span class="json-key">"opening_cash_khr"</span>: <span class="json-number">400000.00</span>
+}</pre>
+                        </div>                        <div class="code-block-wrapper">
+                            <div class="code-header">Example Response</div>
+                            <pre>{
+  <span class="json-key">"status"</span>: <span class="json-string">"success"</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"Shift opened successfully."</span>,
+  <span class="json-key">"data"</span>: {<span class="json-key">"id"</span>: <span class="json-string">"uuid"</span>}
+}</pre>
+                        </div></div>
+                </div>
+            </div>
+            <div class="endpoint get" id="tables-categories">
+                <div class="endpoint-header">
+                    <span class="endpoint-method">GET</span>
+                    <span class="endpoint-path">/api/v1/tables/categories</span>
+                </div>
+                <div class="endpoint-body">
+                    <div class="endpoint-info">
+                        <h3 class="endpoint-title">List Table Categories</h3>
+                        <p class="endpoint-desc">Returns table zones (e.g., Indoor, Outdoor).</p>
+                        
+                    </div>
+                    <div class="endpoint-examples">                        <div class="code-block-wrapper">
+                            <div class="code-header">Example Response</div>
+                            <pre>{
+  <span class="json-key">"status"</span>: <span class="json-string">"success"</span>,
+  <span class="json-key">"data"</span>: [
+    {<span class="json-key">"id"</span>: <span class="json-string">"uuid"</span>, <span class="json-key">"name"</span>: <span class="json-string">"Indoor"</span>}
+  ]
+}</pre>
+                        </div></div>
+                </div>
+            </div>
+            <div class="endpoint get" id="tables-list">
+                <div class="endpoint-header">
+                    <span class="endpoint-method">GET</span>
+                    <span class="endpoint-path">/api/v1/tables</span>
+                </div>
+                <div class="endpoint-body">
+                    <div class="endpoint-info">
+                        <h3 class="endpoint-title">List Tables</h3>
+                        <p class="endpoint-desc">Returns all tables and their statuses.</p>
+                        <table><tr><th>Query Param</th><th>Description</th></tr><tr><td><span class="param-name">category</span><br><span class="param-type">string</span></td><td>Optional filter.</td></tr></table>
+                    </div>
+                    <div class="endpoint-examples">                        <div class="code-block-wrapper">
+                            <div class="code-header">Example Response</div>
+                            <pre>{
+  <span class="json-key">"status"</span>: <span class="json-string">"success"</span>,
+  <span class="json-key">"data"</span>: [
+    {<span class="json-key">"id"</span>: <span class="json-string">"uuid"</span>, <span class="json-key">"table_number"</span>: <span class="json-string">"T1"</span>, <span class="json-key">"status"</span>: <span class="json-string">"available"</span>, <span class="json-key">"category"</span>: <span class="json-string">"Indoor"</span>}
+  ]
+}</pre>
+                        </div></div>
+                </div>
+            </div>
+            <div class="endpoint get" id="customers-list">
+                <div class="endpoint-header">
+                    <span class="endpoint-method">GET</span>
+                    <span class="endpoint-path">/api/v1/customers</span>
+                </div>
+                <div class="endpoint-body">
+                    <div class="endpoint-info">
+                        <h3 class="endpoint-title">Search Customers</h3>
+                        <p class="endpoint-desc">Search customers by name or phone.</p>
+                        <table><tr><th>Query Param</th><th>Description</th></tr><tr><td><span class="param-name">search</span><br><span class="param-type">string</span></td><td>Search term.</td></tr></table>
+                    </div>
+                    <div class="endpoint-examples">                        <div class="code-block-wrapper">
+                            <div class="code-header">Example Response</div>
+                            <pre>{
+  <span class="json-key">"status"</span>: <span class="json-string">"success"</span>,
+  <span class="json-key">"data"</span>: [
+    {<span class="json-key">"id"</span>: <span class="json-string">"uuid"</span>, <span class="json-key">"first_name"</span>: <span class="json-string">"John"</span>, <span class="json-key">"phone"</span>: <span class="json-string">"+1234567890"</span>}
+  ]
+}</pre>
+                        </div></div>
+                </div>
+            </div>
+<h2 class="module-header" id="module-catalog">Catalog & Menu</h2>
+            <div class="endpoint get" id="catalog-categories">
+                <div class="endpoint-header">
+                    <span class="endpoint-method">GET</span>
+                    <span class="endpoint-path">/api/v1/categories</span>
+                </div>
+                <div class="endpoint-body">
+                    <div class="endpoint-info">
+                        <h3 class="endpoint-title">List Product Categories</h3>
+                        <p class="endpoint-desc">Retrieves categories for POS sidebar.</p>
+                        
+                    </div>
+                    <div class="endpoint-examples">                        <div class="code-block-wrapper">
+                            <div class="code-header">Example Response</div>
+                            <pre>{
+  <span class="json-key">"status"</span>: <span class="json-string">"success"</span>,
+  <span class="json-key">"data"</span>: [
+    {<span class="json-key">"id"</span>: <span class="json-string">"uuid"</span>, <span class="json-key">"name"</span>: <span class="json-string">"Hot Coffee"</span>}
+  ]
+}</pre>
+                        </div></div>
+                </div>
+            </div>
+            <div class="endpoint get" id="catalog-products">
+                <div class="endpoint-header">
+                    <span class="endpoint-method">GET</span>
+                    <span class="endpoint-path">/api/v1/products</span>
+                </div>
+                <div class="endpoint-body">
+                    <div class="endpoint-info">
+                        <h3 class="endpoint-title">List Products</h3>
+                        <p class="endpoint-desc">Retrieves products for the main POS grid.</p>
+                        <table><tr><th>Query Param</th><th>Description</th></tr><tr><td><span class="param-name">category_id</span><br><span class="param-type">uuid</span></td><td>Filter by category.</td></tr></table>
+                    </div>
+                    <div class="endpoint-examples">                        <div class="code-block-wrapper">
+                            <div class="code-header">Example Response</div>
+                            <pre>{
+  <span class="json-key">"status"</span>: <span class="json-string">"success"</span>,
+  <span class="json-key">"data"</span>: [
+    {<span class="json-key">"id"</span>: <span class="json-string">"uuid"</span>, <span class="json-key">"name"</span>: <span class="json-string">"Latte"</span>, <span class="json-key">"price"</span>: <span class="json-number">3.50</span>, <span class="json-key">"category_id"</span>: <span class="json-string">"uuid"</span>}
+  ]
+}</pre>
+                        </div></div>
+                </div>
+            </div>
+<h2 class="module-header" id="module-orders">Orders & POS</h2>
+            <div class="endpoint get" id="orders-list">
+                <div class="endpoint-header">
+                    <span class="endpoint-method">GET</span>
+                    <span class="endpoint-path">/api/v1/orders</span>
+                </div>
+                <div class="endpoint-body">
+                    <div class="endpoint-info">
+                        <h3 class="endpoint-title">List Orders</h3>
+                        <p class="endpoint-desc">Retrieve active orders for the current shift.</p>
+                        
+                    </div>
+                    <div class="endpoint-examples">                        <div class="code-block-wrapper">
+                            <div class="code-header">Example Response</div>
+                            <pre>{
+  <span class="json-key">"status"</span>: <span class="json-string">"success"</span>,
+  <span class="json-key">"data"</span>: [
+    {<span class="json-key">"id"</span>: <span class="json-string">"uuid"</span>, <span class="json-key">"order_number"</span>: <span class="json-string">"ORD-001"</span>, <span class="json-key">"status"</span>: <span class="json-string">"pending"</span>, <span class="json-key">"total"</span>: <span class="json-number">12.50</span>}
+  ]
+}</pre>
+                        </div></div>
+                </div>
+            </div>
+            <div class="endpoint post" id="orders-create">
+                <div class="endpoint-header">
+                    <span class="endpoint-method">POST</span>
+                    <span class="endpoint-path">/api/v1/orders</span>
+                </div>
+                <div class="endpoint-body">
+                    <div class="endpoint-info">
+                        <h3 class="endpoint-title">Create Order</h3>
+                        <p class="endpoint-desc">Create a new order without paying yet.</p>
+                        <table><tr><th>Parameter</th><th>Description</th></tr><tr><td><span class="param-name">items</span> <span class="param-required">Required</span><br><span class="param-type">array</span></td><td>Array of products and quantities.</td></tr></table>
+                    </div>
+                    <div class="endpoint-examples">                        <div class="code-block-wrapper">
+                            <div class="code-header">Example Request Body</div>
+                            <pre>{
+  <span class="json-key">"branch_id"</span>: <span class="json-string">"uuid"</span>,
+  <span class="json-key">"shift_id"</span>: <span class="json-string">"uuid"</span>,
+  <span class="json-key">"customer_id"</span>: <span class="json-string">"uuid"</span>,
+  <span class="json-key">"table_id"</span>: <span class="json-string">"uuid"</span>,
+  <span class="json-key">"order_type"</span>: <span class="json-string">"dine_in"</span>,
+  <span class="json-key">"items"</span>: [
+    {
+      <span class="json-key">"product_id"</span>: <span class="json-string">"uuid"</span>,
+      <span class="json-key">"quantity"</span>: <span class="json-number">2</span>,
+      <span class="json-key">"selected_modifiers"</span>: ["uuid-1", "uuid-2"],
+      <span class="json-key">"notes"</span>: <span class="json-string">"Extra hot, please"</span>
+    }
+  ]
+}</pre>
+                        </div>                        <div class="code-block-wrapper">
+                            <div class="code-header">Example Response</div>
+                            <pre>{
+  <span class="json-key">"status"</span>: <span class="json-string">"success"</span>,
+  <span class="json-key">"data"</span>: {<span class="json-key">"id"</span>: <span class="json-string">"uuid"</span>, <span class="json-key">"order_number"</span>: <span class="json-string">"ORD-002"</span>}
+}</pre>
+                        </div></div>
+                </div>
+            </div>
+            <div class="endpoint post" id="orders-pay">
+                <div class="endpoint-header">
+                    <span class="endpoint-method">POST</span>
+                    <span class="endpoint-path">/api/v1/orders/{id}/pay</span>
+                </div>
+                <div class="endpoint-body">
+                    <div class="endpoint-info">
+                        <h3 class="endpoint-title">Process Payment</h3>
+                        <p class="endpoint-desc">Process payment and mark order as Paid.</p>
+                        <table><tr><th>Parameter</th><th>Description</th></tr><tr><td><span class="param-name">payment_method_id</span> <span class="param-required">Required</span><br><span class="param-type">uuid</span></td><td>ID of payment method.</td></tr></table>
+                    </div>
+                    <div class="endpoint-examples">                        <div class="code-block-wrapper">
+                            <div class="code-header">Example Request Body</div>
+                            <pre>{
+  <span class="json-key">"payment_method_id"</span>: <span class="json-string">"uuid"</span>,
+  <span class="json-key">"amount_tendered"</span>: <span class="json-number">20.00</span>
+}</pre>
+                        </div>                        <div class="code-block-wrapper">
+                            <div class="code-header">Example Response</div>
+                            <pre>{
+  <span class="json-key">"status"</span>: <span class="json-string">"success"</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"Payment processed successfully."</span>
+}</pre>
+                        </div></div>
+                </div>
+            </div>
+            <div class="endpoint get" id="orders-tracking">
+                <div class="endpoint-header">
+                    <span class="endpoint-method">GET</span>
+                    <span class="endpoint-path">/api/v1/orders/{order_number}</span>
+                </div>
+                <div class="endpoint-body">
+                    <div class="endpoint-info">
+                        <h3 class="endpoint-title">Track Order (Public)</h3>
+                        <p class="endpoint-desc">Fetch current status using order number.</p>
+                        
+                    </div>
+                    <div class="endpoint-examples">                        <div class="code-block-wrapper">
+                            <div class="code-header">Example Response</div>
+                            <pre>{
+  <span class="json-key">"status"</span>: <span class="json-string">"success"</span>,
+  <span class="json-key">"data"</span>: {<span class="json-key">"order_number"</span>: <span class="json-string">"ORD-002"</span>, <span class="json-key">"status"</span>: <span class="json-string">"preparing"</span>}
+}</pre>
+                        </div></div>
+                </div>
+            </div>
+            <div class="endpoint patch" id="orders-status">
+                <div class="endpoint-header">
+                    <span class="endpoint-method">PATCH</span>
+                    <span class="endpoint-path">/api/v1/orders/{id}/status</span>
+                </div>
+                <div class="endpoint-body">
+                    <div class="endpoint-info">
+                        <h3 class="endpoint-title">Update Order Status</h3>
+                        <p class="endpoint-desc">Update order progress (pending -> preparing -> ready).</p>
+                        
+                    </div>
+                    <div class="endpoint-examples">                        <div class="code-block-wrapper">
+                            <div class="code-header">Example Request Body</div>
+                            <pre>{
+  <span class="json-key">"status"</span>: <span class="json-string">"ready"</span>
+}</pre>
+                        </div>                        <div class="code-block-wrapper">
+                            <div class="code-header">Example Response</div>
+                            <pre>{
+  <span class="json-key">"status"</span>: <span class="json-string">"success"</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"Status updated."</span>
+}</pre>
+                        </div></div>
+                </div>
+            </div>
+            <div class="endpoint delete" id="orders-delete">
+                <div class="endpoint-header">
+                    <span class="endpoint-method">DELETE</span>
+                    <span class="endpoint-path">/api/v1/orders/{id}</span>
+                </div>
+                <div class="endpoint-body">
+                    <div class="endpoint-info">
+                        <h3 class="endpoint-title">Void Order</h3>
+                        <p class="endpoint-desc">Cancel or void an active order.</p>
+                        
+                    </div>
+                    <div class="endpoint-examples">                        <div class="code-block-wrapper">
+                            <div class="code-header">Example Response</div>
+                            <pre>{
+  <span class="json-key">"status"</span>: <span class="json-string">"success"</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"Order voided successfully."</span>
+}</pre>
+                        </div></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

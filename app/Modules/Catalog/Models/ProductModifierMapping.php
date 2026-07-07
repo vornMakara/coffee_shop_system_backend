@@ -13,10 +13,7 @@ class ProductModifierMapping extends Model
     // Use specific table name since it doesn't follow standard pluralization
     protected $table = 'product_modifier_mapping';
 
-    protected $fillable = [
-        'product_id',
-        'modifier_group_id',
-    ];
+    protected $guarded = ['id'];
 
     /**
      * Get the product this mapping belongs to.

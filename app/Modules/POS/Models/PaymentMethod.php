@@ -11,12 +11,7 @@ class PaymentMethod extends Model
 {
     use HasFactory, HasUuid;
 
-    protected $fillable = [
-        'branch_id',
-        'name',
-        'type', // 'cash', 'card', 'qr', 'ewallet'
-        'is_active',
-    ];
+    protected $guarded = ['id'];
 
     /**
      * Get the branch this payment method belongs to.

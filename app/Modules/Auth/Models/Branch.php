@@ -11,13 +11,7 @@ class Branch extends Model
 {
     use HasFactory, HasUuid, SoftDeletes;
 
-    protected $fillable = [
-        'name',
-        'code',
-        'address',
-        'phone',
-        'is_active',
-    ];
+    protected $guarded = ['id'];
 
     /**
      * Get the users belonging to this branch.

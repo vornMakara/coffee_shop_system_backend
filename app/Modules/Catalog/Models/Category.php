@@ -12,13 +12,7 @@ class Category extends Model
 {
     use HasFactory, HasUuid, SoftDeletes;
 
-    protected $fillable = [
-        'branch_id',
-        'parent_id',
-        'name',
-        'sort_order',
-        'is_active',
-    ];
+    protected $guarded = ['id'];
 
     /**
      * Get the branch this category belongs to.

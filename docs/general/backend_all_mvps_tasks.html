@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Backend (All MVPs) - Task List</title>
+    <style>
+        :root {
+            --primary: #F05340; /* Laravel Red */
+            --primary-light: #fbeee9;
+            --secondary: #1E293B;
+            --accent: #3B82F6;
+            --success: #10B981;
+            --background: #F8FAFC;
+            --surface: #FFFFFF;
+            --text-main: #334155;
+            --text-light: #64748B;
+            --border: #E2E8F0;
+            --radius: 12px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--background);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: var(--secondary);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .phase-card {
+            background-color: var(--surface);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border);
+            border-top: 5px solid var(--primary);
+        }
+
+        .phase-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .phase-header h2 {
+            color: var(--secondary);
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .phase-desc {
+            color: var(--text-light);
+            font-style: italic;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .task-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px 0;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .checkbox {
+            margin-right: 15px;
+            margin-top: 5px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--success);
+        }
+
+        .task-content {
+            flex: 1;
+        }
+
+        .task-title {
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .task-details {
+            color: var(--text-main);
+            font-size: 0.95rem;
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .task-details li {
+            margin-bottom: 4px;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .code-snippet {
+            background-color: #F1F5F9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #EF4444;
+            font-size: 0.9em;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>🚀 Complete Backend (All MVPs) Roadmap</h1>
+            <p class="subtitle">Comprehensive Roadmap for MVP 1 through MVP 4</p>
+        </header>
+
+        <!-- MVP 1 - Phase 1: Foundation -->
+        <div class="phase-card" style="border-top-color: #F05340;">
+            <div class="phase-header">
+                <div>
+                    <h2>MVP 1 - Phase 1: Foundation</h2>
+                    <span class="phase-desc">You cannot build APIs without the database and models being ready.</span>
+                </div>
+            </div>
+            <ul class="task-list">
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox" checked>
+                    <div class="task-content">
+                        <div class="badge">Config</div>
+                        <div class="task-title">Task 1: Environment & Database</div>
+                        <ul class="task-details">
+                            <li>Set up <span class="code-snippet">.env</span> file with MySQL credentials.</li>
+                            <li>Ensure database connection is active.</li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox" checked>
+                    <div class="task-content">
+                        <div class="badge">Database</div>
+                        <div class="task-title">Task 2: Create Core Migrations</div>
+                        <ul class="task-details">
+                            <li>Create <span class="code-snippet">users</span>, <span class="code-snippet">roles</span>, <span class="code-snippet">branches</span>, and <span class="code-snippet">customers</span> tables.</li>
+                            <li>Create <span class="code-snippet">brands</span>, <span class="code-snippet">units</span>, <span class="code-snippet">categories</span>, and <span class="code-snippet">products</span> tables.</li>
+                            <li>Create <span class="code-snippet">modifier_groups</span>, <span class="code-snippet">modifier_options</span>, and <span class="code-snippet">product_modifier_mapping</span> tables.</li>
+                            <li>Create <span class="code-snippet">tables</span> and <span class="code-snippet">table_categories</span> tables.</li>
+                            <li>Create <span class="code-snippet">orders</span> and <span class="code-snippet">order_items</span> tables.</li>
+                            <li>Create <span class="code-snippet">sales</span>, <span class="code-snippet">sale_payments</span>, <span class="code-snippet">payment_methods</span>, <span class="code-snippet">shifts</span>, and <span class="code-snippet">shift_cash_movements</span>.</li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox" checked>
+                    <div class="task-content">
+                        <div class="badge">Eloquent</div>
+                        <div class="task-title">Task 3: Models & Relationships</div>
+                        <ul class="task-details">
+                            <li>Define <span class="code-snippet">hasMany</span> and <span class="code-snippet">belongsTo</span> on all newly created models.</li>
+                            <li>Setup fillable properties for mass assignment security.</li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox" checked>
+                    <div class="task-content">
+                        <div class="badge">Testing Data</div>
+                        <div class="task-title">Task 4: Database Seeders</div>
+                        <ul class="task-details">
+                            <li>Write a <span class="code-snippet">DatabaseSeeder</span> to generate 1 Admin, 1 Cashier.</li>
+                            <li>Generate 3 Categories and 10 dummy Coffee Products.</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- MVP 1 - Phase 2: Security & Auth -->
+        <div class="phase-card" style="border-top-color: #F05340;">
+            <div class="phase-header">
+                <div>
+                    <h2>MVP 1 - Phase 2: Security & Auth</h2>
+                    <span class="phase-desc">You cannot process orders if you don't know who the cashier is.</span>
+                </div>
+            </div>
+            <ul class="task-list">
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox" checked>
+                    <div class="task-content">
+                        <div class="badge">JWT</div>
+                        <div class="task-title">Task 5: Configure Authentication</div>
+                        <ul class="task-details">
+                            <li>Install and configure <span class="code-snippet">php-open-source-saver/jwt-auth</span>.</li>
+                            <li>Implement <span class="code-snippet">JWTSubject</span> on the User model.</li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox" checked>
+                    <div class="task-content">
+                        <div class="badge">API Endpoints</div>
+                        <div class="task-title">Task 6: Auth Endpoints</div>
+                        <ul class="task-details">
+                            <li><span class="code-snippet">POST /api/v1/auth/login</span> (Returns JWT Token).</li>
+                            <li><span class="code-snippet">POST /api/v1/auth/logout</span> (Invalidates Token).</li>
+                            <li><span class="code-snippet">GET /api/v1/auth/me</span> (Returns logged-in user profile).</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- MVP 1 - Phase 3: Core API (Read Operations) -->
+        <div class="phase-card" style="border-top-color: #F05340;">
+            <div class="phase-header">
+                <div>
+                    <h2>MVP 1 - Phase 3: Core API (Read Operations)</h2>
+                    <span class="phase-desc">The Nuxt.js frontend needs these to display the menus and POS screen.</span>
+                </div>
+            </div>
+            <ul class="task-list">
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox" checked>
+                    <div class="task-content">
+                        <div class="badge">API Endpoints</div>
+                        <div class="task-title">Task 7: Catalog & Menu APIs</div>
+                        <ul class="task-details">
+                            <li><span class="code-snippet">GET /api/v1/categories</span></li>
+                            <li><span class="code-snippet">GET /api/v1/products</span> (Filterable by category).</li>
+                            <li><span class="code-snippet">GET /api/v1/products/{id}</span> (Includes product modifiers).</li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox" checked>
+                    <div class="task-content">
+                        <div class="badge" style="background-color: #fef3c7; color: #d97706;">POS Data</div>
+                        <div class="task-title">Task 7.5: POS Core Data APIs</div>
+                        <ul class="task-details">
+                            <li><span class="code-snippet">GET /api/v1/shifts/current</span> and <span class="code-snippet">POST /api/v1/shifts/open</span></li>
+                            <li><span class="code-snippet">GET /api/v1/tables</span> (List tables with availability)</li>
+                            <li><span class="code-snippet">GET /api/v1/customers</span> (Search by phone or name)</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- MVP 1 - Phase 4: Business Logic (Write Operations) -->
+        <div class="phase-card" style="border-top-color: #F05340;">
+            <div class="phase-header">
+                <div>
+                    <h2>MVP 1 - Phase 4: Business Logic (Write Operations)</h2>
+                    <span class="phase-desc">The most complex part of MVP 1: Processing a sale.</span>
+                </div>
+            </div>
+            <ul class="task-list">
+
+                <li class="task-item completed">
+                    <input type="checkbox" class="checkbox" checked>
+                    <div class="task-content">
+                        <div class="badge">Critical Logic</div>
+                        <div class="task-title">Task 8: Create Order API</div>
+                        <ul class="task-details">
+                            <li><span class="code-snippet">POST /api/v1/orders</span></li>
+                            <li>Calculate total price, save main Order, and loop through cart array to save OrderItems (and modifiers).</li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="task-item completed">
+                    <input type="checkbox" class="checkbox" checked>
+                    <div class="task-content">
+                        <div class="badge">Transactions</div>
+                        <div class="task-title">Task 9: Process Payment API</div>
+                        <ul class="task-details">
+                            <li><span class="code-snippet">POST /api/v1/orders/{id}/pay</span></li>
+                            <li>Mark order as Paid, record in <span class="code-snippet">sales</span> and <span class="code-snippet">sale_payments</span> table, update <span class="code-snippet">shift_cash_movements</span>.</li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <li class="task-item completed">
+                    <input type="checkbox" class="checkbox" checked>
+                    <div class="task-content">
+                        <div class="badge">Order Tracking</div>
+                        <div class="task-title">Task 10: Order Status and Queue Tracking</div>
+                        <ul class="task-details">
+                            <li><span class="code-snippet">GET /api/v1/orders/{identifier}</span> (Customer Tracking)</li>
+                            <li><span class="code-snippet">PATCH /api/v1/orders/{id}/status</span> (POS Staff Update)</li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <li class="task-item completed">
+                    <input type="checkbox" class="checkbox" checked>
+                    <div class="task-content">
+                        <div class="badge">Order Management</div>
+                        <div class="task-title">Task 11: List and Delete Orders</div>
+                        <ul class="task-details">
+                            <li><span class="code-snippet">GET /api/v1/orders</span> (List orders with optional status filter)</li>
+                            <li><span class="code-snippet">DELETE /api/v1/orders/{id}</span> (Soft-delete/void an order)</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- MVP 1 - Phase 5: Role-Based Access Control (RBAC) -->
+        <div class="phase-card" style="border-top-color: #F05340;">
+            <div class="phase-header">
+                <div>
+                    <h2>MVP 1 - Phase 5: Role-Based Access Control (RBAC)</h2>
+                    <span class="phase-desc">Dynamic permissions to secure endpoints before moving to KDS.</span>
+                </div>
+            </div>
+            <ul class="task-list">
+
+                <li class="task-item completed">
+                    <input type="checkbox" class="checkbox" checked>
+                    <div class="task-content">
+                        <div class="badge">Architecture</div>
+                        <div class="task-title">Task 12: Dynamic Permissions Config & Command</div>
+                        <ul class="task-details">
+                            <li>Create <span class="code-snippet">config/permissions.php</span> as master dictionary.</li>
+                            <li>Implement <span class="code-snippet">php artisan rbac:sync</span> to sync config to database.</li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="task-item completed">
+                    <input type="checkbox" class="checkbox" checked>
+                    <div class="task-content">
+                        <div class="badge">Database</div>
+                        <div class="task-title">Task 13: RBAC Schema & Seeder</div>
+                        <ul class="task-details">
+                            <li>Migrate <span class="code-snippet">permissions</span>, <span class="code-snippet">role_permissions</span>, <span class="code-snippet">user_permissions</span>.</li>
+                            <li>Create <span class="code-snippet">RolesAndPermissionsSeeder</span> to seed default roles and assign permissions.</li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="task-item completed">
+                    <input type="checkbox" class="checkbox" checked>
+                    <div class="task-content">
+                        <div class="badge">Security</div>
+                        <div class="task-title">Task 14: API Protection & Admin Routes</div>
+                        <ul class="task-details">
+                            <li>Create <span class="code-snippet">CheckPermission</span> middleware and protect POS routes.</li>
+                            <li>Implement <span class="code-snippet">GET /api/v1/permissions</span>, <span class="code-snippet">GET /api/v1/roles</span>, <span class="code-snippet">POST /api/v1/roles</span>, <span class="code-snippet">PUT /api/v1/roles/{id}/permissions</span>.</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- MVP 1 - Phase 6: Admin Data Management (CRUD) -->
+        <div class="phase-card" style="border-top-color: #F05340;">
+            <div class="phase-header">
+                <div>
+                    <h2>MVP 1 - Phase 6: Admin Data Management (CRUD)</h2>
+                    <span class="phase-desc">Building backend API endpoints for the Admin Dashboard to manage resources.</span>
+                </div>
+            </div>
+            <ul class="task-list">
+
+                <li class="task-item completed">
+                    <input type="checkbox" class="checkbox" checked>
+                    <div class="task-content">
+                        <div class="badge">Auth & POS</div>
+                        <div class="task-title">Task 15: Users, Branches, Tables, & Customers API</div>
+                        <ul class="task-details">
+                            <li>CRUD endpoints for <span class="code-snippet">users</span>, <span class="code-snippet">branches</span>, <span class="code-snippet">tables</span>, and <span class="code-snippet">customers</span>.</li>
+                            <li>Implemented SoftDeletes to preserve historical data.</li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="task-item completed">
+                    <input type="checkbox" class="checkbox" checked>
+                    <div class="task-content">
+                        <div class="badge">Catalog</div>
+                        <div class="task-title">Task 16: Menu & Catalog Management API</div>
+                        <ul class="task-details">
+                            <li>CRUD endpoints for <span class="code-snippet">categories</span>, <span class="code-snippet">products</span>, and <span class="code-snippet">modifiers</span>.</li>
+                            <li>Implemented <span class="code-snippet">POST /api/v1/admin/products/{id}/modifiers</span> to sync <span class="code-snippet">product_modifier_mapping</span>.</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- MVP 2 - Phase 1: Kitchen Display System (KDS) -->
+        <div class="phase-card" style="border-top-color: #3B82F6;">
+            <div class="phase-header">
+                <div>
+                    <h2>MVP 2 - Phase 1: Kitchen Display System (KDS)</h2>
+                    <span class="phase-desc">Routing digital tickets to kitchen stations.</span>
+                </div>
+            </div>
+            <ul class="task-list">
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox">
+                    <div class="task-content">
+                        <div class="badge">Setup</div>
+                        <div class="task-title">Task 1: KDS Station Management API</div>
+                        <ul class="task-details">
+                            <li>CRUD endpoints for <span class="code-snippet">kds_stations</span> and <span class="code-snippet">printers</span>.</li>
+                            <li>Map specific products to stations (<span class="code-snippet">product_station_mapping</span>).</li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox">
+                    <div class="task-content">
+                        <div class="badge">Operations</div>
+                        <div class="task-title">Task 2: KDS Order Queue API</div>
+                        <ul class="task-details">
+                            <li><span class="code-snippet">GET /api/v1/kds/orders</span> (Fetch active orders by station).</li>
+                            <li><span class="code-snippet">PATCH /api/v1/kds/orders/{id}/status</span> (Update KDS order status to ready).</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- MVP 2 - Phase 2: Basic Inventory Management -->
+        <div class="phase-card" style="border-top-color: #3B82F6;">
+            <div class="phase-header">
+                <div>
+                    <h2>MVP 2 - Phase 2: Basic Inventory Management</h2>
+                    <span class="phase-desc">Tracking raw ingredients.</span>
+                </div>
+            </div>
+            <ul class="task-list">
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox">
+                    <div class="task-content">
+                        <div class="badge">Catalog</div>
+                        <div class="task-title">Task 3: Ingredients & Units API</div>
+                        <ul class="task-details">
+                            <li>CRUD endpoints for <span class="code-snippet">ingredients</span>.</li>
+                            <li>Manage <span class="code-snippet">ingredient_stocks</span> per branch.</li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox">
+                    <div class="task-content">
+                        <div class="badge">Logic</div>
+                        <div class="task-title">Task 4: Recipe Management API</div>
+                        <ul class="task-details">
+                            <li>Map <span class="code-snippet">products</span> to <span class="code-snippet">ingredients</span> via <span class="code-snippet">recipes</span> table.</li>
+                            <li>Map <span class="code-snippet">modifier_options</span> to <span class="code-snippet">ingredients</span>.</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- MVP 2 - Phase 3: Stock Control -->
+        <div class="phase-card" style="border-top-color: #3B82F6;">
+            <div class="phase-header">
+                <div>
+                    <h2>MVP 2 - Phase 3: Stock Control</h2>
+                    <span class="phase-desc">Monitoring and adjusting inventory levels.</span>
+                </div>
+            </div>
+            <ul class="task-list">
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox">
+                    <div class="task-content">
+                        <div class="badge">Transactions</div>
+                        <div class="task-title">Task 5: Inventory Movement API</div>
+                        <ul class="task-details">
+                            <li>Auto-deduct stock on order completion (<span class="code-snippet">production</span> movement).</li>
+                            <li>Endpoints for manual <span class="code-snippet">stock_adjustments</span> and <span class="code-snippet">waste_records</span>.</li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox">
+                    <div class="task-content">
+                        <div class="badge">Alerts</div>
+                        <div class="task-title">Task 6: Stock Alert System</div>
+                        <ul class="task-details">
+                            <li><span class="code-snippet">GET /api/v1/inventory/low-stock</span> (Filter by <span class="code-snippet">low_stock_threshold</span>).</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- MVP 3 - Phase 1: Procurement -->
+        <div class="phase-card" style="border-top-color: #10B981;">
+            <div class="phase-header">
+                <div>
+                    <h2>MVP 3 - Phase 1: Procurement</h2>
+                    <span class="phase-desc">Buying goods from suppliers.</span>
+                </div>
+            </div>
+            <ul class="task-list">
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox">
+                    <div class="task-content">
+                        <div class="badge">Directory</div>
+                        <div class="task-title">Task 1: Supplier Management API</div>
+                        <ul class="task-details">
+                            <li>CRUD endpoints for <span class="code-snippet">suppliers</span>.</li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox">
+                    <div class="task-content">
+                        <div class="badge">Orders</div>
+                        <div class="task-title">Task 2: Purchase Orders API</div>
+                        <ul class="task-details">
+                            <li><span class="code-snippet">POST /api/v1/purchase-orders</span> (Create PO and <span class="code-snippet">purchase_order_items</span>).</li>
+                            <li>Update PO status (Draft -> Sent).</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- MVP 3 - Phase 2: Receiving & Accounts Payable -->
+        <div class="phase-card" style="border-top-color: #10B981;">
+            <div class="phase-header">
+                <div>
+                    <h2>MVP 3 - Phase 2: Receiving & Accounts Payable</h2>
+                    <span class="phase-desc">Verifying deliveries and tracking payments.</span>
+                </div>
+            </div>
+            <ul class="task-list">
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox">
+                    <div class="task-content">
+                        <div class="badge">Stock In</div>
+                        <div class="task-title">Task 3: Goods Receipts API</div>
+                        <ul class="task-details">
+                            <li><span class="code-snippet">POST /api/v1/goods-receipts</span> (Confirm delivered goods).</li>
+                            <li>Automatically trigger <span class="code-snippet">inventory_movements</span> (<span class="code-snippet">purchase</span>) when receipt is confirmed.</li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox">
+                    <div class="task-content">
+                        <div class="badge">Finance</div>
+                        <div class="task-title">Task 4: Supplier Payments API</div>
+                        <ul class="task-details">
+                            <li>Endpoints for recording <span class="code-snippet">supplier_payments</span> against a PO.</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- MVP 3 - Phase 3: Multi-Branch Logistics -->
+        <div class="phase-card" style="border-top-color: #10B981;">
+            <div class="phase-header">
+                <div>
+                    <h2>MVP 3 - Phase 3: Multi-Branch Logistics</h2>
+                    <span class="phase-desc">Distributing goods between branches.</span>
+                </div>
+            </div>
+            <ul class="task-list">
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox">
+                    <div class="task-content">
+                        <div class="badge">Transfers</div>
+                        <div class="task-title">Task 5: Stock Transfers API</div>
+                        <ul class="task-details">
+                            <li><span class="code-snippet">POST /api/v1/stock-transfers</span> (Request stock transfer).</li>
+                            <li>Update transfer status (Pending -> In Transit -> Received).</li>
+                            <li>Auto-deduct from source and add to destination upon receipt.</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- MVP 4 - Phase 1: Loyalty & CRM -->
+        <div class="phase-card" style="border-top-color: #8B5CF6;">
+            <div class="phase-header">
+                <div>
+                    <h2>MVP 4 - Phase 1: Loyalty & CRM</h2>
+                    <span class="phase-desc">Retaining customers.</span>
+                </div>
+            </div>
+            <ul class="task-list">
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox">
+                    <div class="task-content">
+                        <div class="badge">Members</div>
+                        <div class="task-title">Task 1: Membership API</div>
+                        <ul class="task-details">
+                            <li>Manage <span class="code-snippet">membership_tiers</span>.</li>
+                            <li>Assign customers to tiers via <span class="code-snippet">customer_memberships</span>.</li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox">
+                    <div class="task-content">
+                        <div class="badge">Points</div>
+                        <div class="task-title">Task 2: Loyalty Points & Store Credit API</div>
+                        <ul class="task-details">
+                            <li>Record <span class="code-snippet">loyalty_transactions</span> (Earn on sale, redeem for discount).</li>
+                            <li>Manage <span class="code-snippet">customer_credit_transactions</span> and <span class="code-snippet">gift_cards</span>.</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- MVP 4 - Phase 2: Marketing & Delivery -->
+        <div class="phase-card" style="border-top-color: #8B5CF6;">
+            <div class="phase-header">
+                <div>
+                    <h2>MVP 4 - Phase 2: Marketing & Delivery</h2>
+                    <span class="phase-desc">Driving sales growth.</span>
+                </div>
+            </div>
+            <ul class="task-list">
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox">
+                    <div class="task-content">
+                        <div class="badge">Marketing</div>
+                        <div class="task-title">Task 3: Promotions & Coupons API</div>
+                        <ul class="task-details">
+                            <li>CRUD for <span class="code-snippet">promotions</span> and <span class="code-snippet">promotion_rules</span>.</li>
+                            <li>API to validate and apply <span class="code-snippet">coupons</span> to orders.</li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox">
+                    <div class="task-content">
+                        <div class="badge">Integration</div>
+                        <div class="task-title">Task 4: Delivery Integrations API</div>
+                        <ul class="task-details">
+                            <li>Manage <span class="code-snippet">delivery_platforms</span>.</li>
+                            <li>Webhook endpoints for Grab/FoodPanda to inject <span class="code-snippet">delivery_orders</span>.</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- MVP 4 - Phase 3: Financial Analytics -->
+        <div class="phase-card" style="border-top-color: #8B5CF6;">
+            <div class="phase-header">
+                <div>
+                    <h2>MVP 4 - Phase 3: Financial Analytics</h2>
+                    <span class="phase-desc">Deep business intelligence.</span>
+                </div>
+            </div>
+            <ul class="task-list">
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox">
+                    <div class="task-content">
+                        <div class="badge">Tracking</div>
+                        <div class="task-title">Task 5: Expenses API</div>
+                        <ul class="task-details">
+                            <li>Record daily <span class="code-snippet">expenses</span> by <span class="code-snippet">expense_categories</span>.</li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="task-item">
+                    <input type="checkbox" class="checkbox">
+                    <div class="task-content">
+                        <div class="badge">Reports</div>
+                        <div class="task-title">Task 6: Reporting APIs</div>
+                        <ul class="task-details">
+                            <li><span class="code-snippet">GET /api/v1/reports/daily-summary</span></li>
+                            <li><span class="code-snippet">GET /api/v1/reports/product-sales</span></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</body>
+</html>

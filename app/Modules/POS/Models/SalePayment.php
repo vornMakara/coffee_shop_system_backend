@@ -10,21 +10,16 @@ class SalePayment extends Model
 {
     use HasFactory, HasUuid;
 
-    protected $fillable = [
-        'sale_id',
-        'order_id',
-        'payment_method_id',
-        'amount',
-        'amount_tendered',
-        'change_amount',
-    ];
+    protected $guarded = ['id'];
+    
+    const UPDATED_AT = null;
 
     /**
-     * Get the order associated with this payment.
+     * Get the sale associated with this payment.
      */
-    public function order()
+    public function sale()
     {
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(Sale::class);
     }
 
     /**
