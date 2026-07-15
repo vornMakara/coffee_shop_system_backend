@@ -38,7 +38,7 @@ class SyncRbacPermissions extends Command
 
         foreach ($groups as $groupName => $permissions) {
             foreach ($permissions as $permissionName => $description) {
-                $perm = \App\Modules\Auth\Models\Permission::firstOrCreate(
+                $perm = \App\Modules\Auth\Permission\Models\Permission::firstOrCreate(
                     ['name' => $permissionName],
                     [
                         'group_name' => $groupName,

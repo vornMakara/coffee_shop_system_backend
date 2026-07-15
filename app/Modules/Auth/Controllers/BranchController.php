@@ -3,7 +3,7 @@
 namespace App\Modules\Auth\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Modules\Auth\Models\Branch;
+use App\Modules\Auth\Branch\Models\Branch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
