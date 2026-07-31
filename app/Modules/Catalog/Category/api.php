@@ -8,6 +8,6 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('categories', [CategoryController::class, 'index']);
 });
 
-Route::group(['prefix' => 'admin', 'middleware' => ['auth:api']], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth:api', 'permission:admin.catalog']], function () {
     Route::apiResource('categories', AdminCategoryController::class);
 });
