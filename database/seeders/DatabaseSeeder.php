@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Modules\Auth\Models\Branch;
-use App\Modules\Auth\Models\Role;
-use App\Modules\Auth\Models\User;
-use App\Modules\Catalog\Models\Category;
-use App\Modules\Catalog\Models\Product;
+use App\Modules\Auth\Branch\Models\Branch;
+use App\Modules\Auth\Role\Models\Role;
+use App\Modules\Auth\User\Models\User;
+use App\Modules\Catalog\Category\Models\Category;
+use App\Modules\Catalog\Product\Models\Product;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 

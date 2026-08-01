@@ -2,11 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Modules\Auth\Models\Permission;
-use App\Modules\Auth\Models\Role;
-use App\Modules\Auth\Models\User;
-use App\Modules\Auth\Models\Branch;
-use App\Modules\Catalog\Models\Category;
+use App\Modules\Auth\Permission\Models\Permission;
+use App\Modules\Auth\Role\Models\Role;
+use App\Modules\Auth\User\Models\User;
+use App\Modules\Auth\Branch\Models\Branch;
+use App\Modules\Catalog\Category\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
@@ -26,7 +26,7 @@ class AdminCrudTest extends TestCase
     public function test_admin_can_create_category()
     {
         $adminRole = Role::where('name', 'Admin')->first();
-        
+        //create branch
         $branch = Branch::create([
             'name' => 'Main Branch ' . uniqid(),
         ]);

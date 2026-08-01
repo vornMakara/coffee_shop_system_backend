@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Modules\Auth\Models\Permission;
-use App\Modules\Auth\Models\Role;
-use App\Modules\Auth\Models\User;
+use App\Modules\Auth\Permission\Models\Permission;
+use App\Modules\Auth\Role\Models\Role;
+use App\Modules\Auth\User\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
@@ -45,7 +45,7 @@ class PermissionTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $token,
-        ])->getJson('/api/v1/permissions');
+        ])->getJson('/api/v1/admin/permissions');
 
         $response->assertStatus(403);
     }

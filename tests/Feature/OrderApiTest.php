@@ -2,14 +2,21 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use App\Modules\Auth\Models\User;
-use App\Modules\POS\Models\Order;
+use App\Modules\Auth\User\Models\User;
+use App\Modules\Auth\Branch\Models\Branch;
+use App\Modules\Auth\Role\Models\Role;
+use App\Modules\POS\Order\Models\Order;
+use App\Modules\POS\Shift\Models\Shift;
+use App\Modules\POS\Payment\Models\Sale;
+use App\Modules\POS\Payment\Models\PaymentMethod;
+use App\Modules\Catalog\Category\Models\Category;
+use App\Modules\Catalog\Product\Models\Product;
 
 class OrderApiTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     protected $token;
     protected $product;
@@ -19,16 +26,16 @@ class OrderApiTest extends TestCase
     {
         parent::setUp();
         
-        \App\Modules\POS\Models\Shift::query()->delete();
-        \App\Modules\POS\Models\Sale::withTrashed()->forceDelete();
+        Shift::query()->delete();
+        Sale::withTrashed()->forceDelete();
         Order::withTrashed()->forceDelete();
         
-        $branch = \App\Modules\Auth\Models\Branch::firstOrCreate(
+        $branch = Branch::firstOrCreate(
             ['code' => 'MAIN-01'],
             ['name' => 'Main Branch']
         );
 
-        $role = \App\Modules\Auth\Models\Role::firstOrCreate(
+        $role = Role::firstOrCreate(
             ['name' => 'Cashier'],
             ['display_name' => 'Cashier', 'permissions' => json_encode(['pos.access'])]
         );
@@ -53,12 +60,12 @@ class OrderApiTest extends TestCase
         
         $this->token = $response->json('authorization.token');
 
-        $category = \App\Modules\Catalog\Models\Category::firstOrCreate(
+        $category = Category::firstOrCreate(
             ['name' => 'Hot Coffee', 'branch_id' => $branch->id],
             ['is_active' => true]
         );
 
-        $this->product = \App\Modules\Catalog\Models\Product::firstOrCreate(
+        $this->product = Product::firstOrCreate(
             ['sku' => 'ESP-01', 'branch_id' => $branch->id],
             [
                 'name' => 'Espresso',
@@ -68,7 +75,7 @@ class OrderApiTest extends TestCase
             ]
         );
 
-        $this->paymentMethod = \App\Modules\POS\Models\PaymentMethod::firstOrCreate(
+        $this->paymentMethod = PaymentMethod::firstOrCreate(
             ['name' => 'Cash'],
             ['type' => 'cash', 'is_active' => true]
         );

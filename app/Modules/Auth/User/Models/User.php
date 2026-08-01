@@ -17,6 +17,11 @@ class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable, HasUuid, SoftDeletes;
 
+    protected static function newFactory()
+    {
+        return \Database\Factories\UserFactory::new();
+    }
+
     protected $fillable = [
         'branch_id',
         'role_id',

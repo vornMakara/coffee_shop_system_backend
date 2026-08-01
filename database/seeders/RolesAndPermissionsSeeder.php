@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Modules\Auth\Models\Role;
-use App\Modules\Auth\Models\Permission;
+use App\Modules\Auth\Role\Models\Role;
+use App\Modules\Auth\Permission\Models\Permission;
 
 class RolesAndPermissionsSeeder extends Seeder
 {

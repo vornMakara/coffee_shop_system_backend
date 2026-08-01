@@ -2,23 +2,31 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use App\Modules\Auth\Models\User;
+use App\Modules\Auth\User\Models\User;
+use App\Modules\Auth\Branch\Models\Branch;
+use App\Modules\Auth\Role\Models\Role;
+use App\Modules\Catalog\Category\Models\Category;
+use App\Modules\Catalog\Product\Models\Product;
+use App\Modules\POS\Shift\Models\Shift;
+use App\Modules\POS\Customer\Models\Customer;
+use App\Modules\POS\Table\Models\TableCategory;
+use App\Modules\POS\Table\Models\Table;
 
 class MVP1ApiTest extends TestCase
 {
-    use DatabaseTransactions; // Wraps tests in a transaction without dropping tables
+    use RefreshDatabase;
 
     protected function setUp(): void
     {
         parent::setUp();
         
         // Clear shifts to avoid state leakage
-        \App\Modules\POS\Models\Shift::query()->delete();
+        Shift::query()->delete();
         
         // Setup a branch
-        $branch = \App\Modules\Auth\Models\Branch::firstOrCreate(
+        $branch = Branch::firstOrCreate(
             ['code' => 'MAIN-01'],
             [
                 'name' => 'Main Branch',
@@ -28,7 +36,7 @@ class MVP1ApiTest extends TestCase
         );
 
         // Setup a role
-        $role = \App\Modules\Auth\Models\Role::firstOrCreate(
+        $role = Role::firstOrCreate(
             ['name' => 'Cashier'],
             [
                 'display_name' => 'Cashier',
@@ -51,7 +59,7 @@ class MVP1ApiTest extends TestCase
         );
 
         // Setup a Category and Product
-        $category = \App\Modules\Catalog\Models\Category::firstOrCreate(
+        $category = Category::firstOrCreate(
             ['name' => 'Hot Coffee', 'branch_id' => $branch->id],
             [
                 'description' => 'Hot brewed coffee',
@@ -60,7 +68,7 @@ class MVP1ApiTest extends TestCase
             ]
         );
 
-        \App\Modules\Catalog\Models\Product::firstOrCreate(
+        Product::firstOrCreate(
             ['name' => 'Latte', 'branch_id' => $branch->id],
             [
                 'category_id' => $category->id,
@@ -72,7 +80,7 @@ class MVP1ApiTest extends TestCase
         );
 
         // Setup Customers
-        \App\Modules\POS\Models\Customer::firstOrCreate(
+        Customer::firstOrCreate(
             ['phone' => '555-1234'],
             [
                 'first_name' => 'John',
@@ -82,17 +90,17 @@ class MVP1ApiTest extends TestCase
         );
 
         // Setup Table Category
-        $indoorCategory = \App\Modules\POS\Models\TableCategory::firstOrCreate(
+        $indoorCategory = TableCategory::firstOrCreate(
             ['name' => 'Indoor', 'branch_id' => $branch->id],
             ['sort_order' => 1]
         );
-        $outdoorCategory = \App\Modules\POS\Models\TableCategory::firstOrCreate(
+        $outdoorCategory = TableCategory::firstOrCreate(
             ['name' => 'Outdoor', 'branch_id' => $branch->id],
             ['sort_order' => 2]
         );
 
         // Setup Tables
-        \App\Modules\POS\Models\Table::firstOrCreate(
+        Table::firstOrCreate(
             ['number' => 'T1', 'branch_id' => $branch->id],
             [
                 'table_category_id' => $indoorCategory->id,
@@ -102,7 +110,7 @@ class MVP1ApiTest extends TestCase
             ]
         );
         
-        \App\Modules\POS\Models\Table::firstOrCreate(
+        Table::firstOrCreate(
             ['number' => 'P1', 'branch_id' => $branch->id],
             [
                 'table_category_id' => $outdoorCategory->id,
@@ -179,7 +187,9 @@ class MVP1ApiTest extends TestCase
 
     public function test_can_list_catalog_categories()
     {
-        $response = $this->getJson('/api/v1/categories');
+        $user = $this->getCashier();
+
+        $response = $this->actingAs($user, 'api')->getJson('/api/v1/categories');
 
         $response->assertStatus(200)
                  ->assertJsonFragment(['status' => 'success'])
@@ -192,7 +202,9 @@ class MVP1ApiTest extends TestCase
 
     public function test_can_list_catalog_products()
     {
-        $response = $this->getJson('/api/v1/products');
+        $user = $this->getCashier();
+
+        $response = $this->actingAs($user, 'api')->getJson('/api/v1/products');
 
         $response->assertStatus(200)
                  ->assertJsonFragment(['status' => 'success'])
