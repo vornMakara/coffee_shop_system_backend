@@ -32,6 +32,12 @@ class AdminCrudTest extends TestCase
             'name' => 'Main Branch ' . uniqid(),
         ]);
 
+        //create branch
+        $branch = Branch::create([
+            'name' => 'Main Branch ' . uniqid(),
+        ]);
+        
+        
         $admin = User::create([
             'username' => 'admin' . uniqid(),
             'first_name' => 'Admin',
