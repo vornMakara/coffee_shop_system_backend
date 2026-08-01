@@ -27,10 +27,11 @@ class AdminCrudTest extends TestCase
     {
         $adminRole = Role::where('name', 'Admin')->first();
         
-        
+
         $branch = Branch::create([
             'name' => 'Main Branch ' . uniqid(),
         ]);
+        
         
         $admin = User::create([
             'username' => 'admin' . uniqid(),
