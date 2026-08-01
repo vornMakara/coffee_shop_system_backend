@@ -26,8 +26,7 @@ class AdminCrudTest extends TestCase
     public function test_admin_can_create_category()
     {
         $adminRole = Role::where('name', 'Admin')->first();
-        
-        
+        //create branch
         $branch = Branch::create([
             'name' => 'Main Branch ' . uniqid(),
         ]);
