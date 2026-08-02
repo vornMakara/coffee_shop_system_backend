@@ -24,14 +24,14 @@ jobs:
             echo "Pulling latest code..."
             git pull origin main
 
+            echo "Clearing old cache files..."
+            rm -f bootstrap/cache/*.php
+
             echo "Installing Composer dependencies..."
             composer install --no-dev --optimize-autoloader
 
             echo "Running migrations..."
             php artisan migrate --force
-
-            echo "Clearing Laravel cache..."
-            php artisan optimize:clear
 
             echo "Caching Laravel configuration..."
             php artisan config:cache
