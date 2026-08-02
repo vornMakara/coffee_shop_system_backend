@@ -25,7 +25,10 @@ jobs:
             git pull origin main
 
             echo "Clearing old cache files..."
-            rm -f bootstrap/cache/*.php
+            sudo rm -f bootstrap/cache/*.php
+
+            echo "Fixing permissions for storage and cache..."
+            sudo chmod -R 777 storage bootstrap/cache
 
             echo "Installing Composer dependencies..."
             composer install --no-dev --optimize-autoloader
