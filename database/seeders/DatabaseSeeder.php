@@ -19,57 +19,57 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // 1. Create Main Branch
-        $branch = Branch::create([
-            'name' => 'HQ Coffee Shop',
-            'code' => 'HQ-01',
-            'address' => '123 Coffee Street, Downtown',
-            'phone' => '123-456-7890',
-            'is_active' => true,
-        ]);
+        // 1. Run Roles and Permissions Seeder
+        $this->call(RolesAndPermissionsSeeder::class);
 
-        // 2. Create Roles
-        $adminRole = Role::create([
-            'name' => 'admin',
-            'display_name' => 'Administrator',
-            'is_active' => true,
-        ]);
+        // 2. Create Main Branch
+        $branch = Branch::firstOrCreate(
+            ['code' => 'HQ-01'],
+            [
+                'name' => 'HQ Coffee Shop',
+                'address' => '123 Coffee Street, Downtown',
+                'phone' => '123-456-7890',
+                'is_active' => true,
+            ]
+        );
 
-        $cashierRole = Role::create([
-            'name' => 'cashier',
-            'display_name' => 'Cashier',
-            'is_active' => true,
-        ]);
+        // 3. Get Roles created by RolesAndPermissionsSeeder
+        $adminRole = Role::where('name', 'Admin')->first();
+        $cashierRole = Role::where('name', 'Cashier')->first();
 
-        // 3. Create Users
-        User::create([
-            'branch_id' => $branch->id,
-            'role_id' => $adminRole->id,
-            'username' => 'admin',
-            'first_name' => 'System',
-            'last_name' => 'Admin',
-            'email' => 'admin@coffeeshop.com',
-            'password' => Hash::make('password123'), // Default password
-            'is_active' => true,
-        ]);
+        // 4. Create Users (Matching Swagger Documentation Test Accounts)
+        User::firstOrCreate(
+            ['email' => 'admin@coffeeshop.com'],
+            [
+                'branch_id' => $branch->id,
+                'role_id' => $adminRole->id,
+                'username' => 'admin',
+                'first_name' => 'System',
+                'last_name' => 'Admin',
+                'password' => Hash::make('password123'), // As specified in Swagger Docs
+                'is_active' => true,
+            ]
+        );
 
-        User::create([
-            'branch_id' => $branch->id,
-            'role_id' => $cashierRole->id,
-            'username' => 'cashier1',
-            'first_name' => 'John',
-            'last_name' => 'Doe',
-            'email' => 'cashier@coffeeshop.com',
-            'password' => Hash::make('password123'),
-            'is_active' => true,
-        ]);
+        User::firstOrCreate(
+            ['email' => 'cashier@coffeeshop.com'],
+            [
+                'branch_id' => $branch->id,
+                'role_id' => $cashierRole->id,
+                'username' => 'cashier1',
+                'first_name' => 'John',
+                'last_name' => 'Doe',
+                'password' => Hash::make('password123'),
+                'is_active' => true,
+            ]
+        );
 
-        // 4. Create Categories
-        $hotCoffee = Category::create(['branch_id' => $branch->id, 'name' => 'Hot Coffee', 'sort_order' => 1]);
-        $coldBrew = Category::create(['branch_id' => $branch->id, 'name' => 'Cold Brew & Iced', 'sort_order' => 2]);
-        $pastries = Category::create(['branch_id' => $branch->id, 'name' => 'Pastries', 'sort_order' => 3]);
+        // 5. Create Categories
+        $hotCoffee = Category::firstOrCreate(['name' => 'Hot Coffee', 'branch_id' => $branch->id], ['sort_order' => 1]);
+        $coldBrew = Category::firstOrCreate(['name' => 'Cold Brew & Iced', 'branch_id' => $branch->id], ['sort_order' => 2]);
+        $pastries = Category::firstOrCreate(['name' => 'Pastries', 'branch_id' => $branch->id], ['sort_order' => 3]);
 
-        // 5. Create 10 Dummy Products
+        // 6. Create 10 Dummy Products
         $products = [
             // Hot Coffees
             ['category_id' => $hotCoffee->id, 'name' => 'Espresso', 'selling_price' => 2.50],
@@ -89,13 +89,17 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($products as $product) {
-            Product::create([
-                'branch_id' => $branch->id,
-                'category_id' => $product['category_id'],
-                'name' => $product['name'],
-                'selling_price' => $product['selling_price'],
-                'is_active' => true,
-            ]);
+            Product::firstOrCreate(
+                ['name' => $product['name'], 'branch_id' => $branch->id],
+                [
+                    'category_id' => $product['category_id'],
+                    'selling_price' => $product['selling_price'],
+                    'is_active' => true,
+                ]
+            );
         }
+
+        // 7. Run POS Data Seeder
+        $this->call(POSDataSeeder::class);
     }
 }
