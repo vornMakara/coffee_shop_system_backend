@@ -27,14 +27,19 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
 
+            echo "Clearing old cache files..."
+            sudo rm -f bootstrap/cache/*.php
+
+            echo "Fixing permissions for storage and cache..."
+            sudo chmod -R 777 storage bootstrap/cache
+
             echo "Installing Composer dependencies..."
             composer install --no-dev --optimize-autoloader
 
             echo "Running migrations..."
             php artisan migrate --force
 
-            echo "Clearing and caching Laravel configuration..."
-            php artisan optimize:clear
+            echo "Caching Laravel configuration..."
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
