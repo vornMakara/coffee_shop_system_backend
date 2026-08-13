@@ -31,17 +31,27 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
 
-            echo "Clearing and caching Laravel configuration..."
+            echo "Installing Composer dependencies..."
+            composer install --no-dev --optimize-autoloader
+
+            echo "Clearing old caches..."
             php artisan optimize:clear
+
+            echo "Running migrations..."
+            php artisan migrate --force
+
+            echo "Ensuring JWT secret is set..."
+            if ! grep -q "^JWT_SECRET=." .env; then
+                php artisan jwt:secret --force
+            fi
+
+            echo "Caching Laravel configuration..."
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
 
-            echo "Installing Composer dependencies..."
-            composer install --no-dev --optimize-autoloader
-
-            echo "Running migrations..."
-            php artisan migrate --force
+            echo "Generating Swagger API documentation..."
+            php artisan l5-swagger:generate
 
             echo "Fixing permissions for storage and cache..."
             sudo chmod -R 777 storage bootstrap/cache
