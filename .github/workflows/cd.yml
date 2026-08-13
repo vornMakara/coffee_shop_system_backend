@@ -5,6 +5,8 @@ on:
     workflows: ["Laravel CI"]
     types:
       - completed
+    branches:
+      - main
 
 jobs:
   deploy:
@@ -12,17 +14,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy to EC2
+      - name: Deploy to VPS
         uses: appleboy/ssh-action@v1.2.0
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            cd /var/www/html/coffee_shop_system_backend
+            cd /var/www/coffee_shop_system_backend
 
             echo "Pulling latest code..."
-            git pull origin main
+            git fetch origin main
+            git reset --hard origin/main
 
             echo "Installing Composer dependencies..."
             composer install --no-dev --optimize-autoloader
@@ -30,12 +33,13 @@ jobs:
             echo "Running migrations..."
             php artisan migrate --force
 
-            echo "Clearing Laravel cache..."
+            echo "Clearing and caching Laravel configuration..."
             php artisan optimize:clear
-
-            echo "Caching Laravel configuration..."
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
+
+            echo "Fixing permissions for storage and cache..."
+            sudo chmod -R 777 storage bootstrap/cache
 
             echo "Deployment completed!"
