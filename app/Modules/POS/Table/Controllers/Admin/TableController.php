@@ -104,7 +104,14 @@ class TableController extends Controller
      */
     public function store(StoreTableRequest $request)
     {
-        $table = $this->tableService->createTable($request->validated());
+        $validated = $request->validated();
+        $data = [
+            'branch_id' => $validated['branch_id'],
+            'number' => $validated['table_number'],
+            'capacity' => $validated['seating_capacity'] ?? 2,
+            'status' => $validated['status'] ?? 'available'
+        ];
+        $table = $this->tableService->createTable($data);
 
         return response()->json([
             'status' => 'success',
@@ -192,7 +199,14 @@ class TableController extends Controller
     public function update(UpdateTableRequest $request, $id)
     {
         $table = Table::findOrFail($id);
-        $table = $this->tableService->updateTable($table, $request->validated());
+        
+        $validated = $request->validated();
+        $data = [];
+        if (isset($validated['table_number'])) $data['number'] = $validated['table_number'];
+        if (isset($validated['seating_capacity'])) $data['capacity'] = $validated['seating_capacity'];
+        if (isset($validated['status'])) $data['status'] = $validated['status'];
+
+        $table = $this->tableService->updateTable($table, $data);
 
         return response()->json([
             'status' => 'success',
