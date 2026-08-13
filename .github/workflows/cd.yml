@@ -6,7 +6,7 @@ on:
     types:
       - completed
     branches:
-      - develop
+      - main
 
 jobs:
   deploy:
@@ -24,8 +24,8 @@ jobs:
             cd /var/www/coffee_shop_system_backend
 
             echo "Pulling latest code..."
-            git fetch origin develop
-            git reset --hard origin/develop
+            git fetch origin main
+            git reset --hard origin/main
 
             echo "Clearing old cache files..."
             sudo rm -f bootstrap/cache/*.php
