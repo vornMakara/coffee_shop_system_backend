@@ -17,4 +17,9 @@ class TableCategory extends Model
     {
         return $this->hasMany(\App\Modules\POS\Table\Models\Table::class);
     }
+
+    public function branch()
+    {
+        return $this->belongsTo(\App\Modules\Auth\Branch\Models\Branch::class, 'branch_id');
+    }
 }

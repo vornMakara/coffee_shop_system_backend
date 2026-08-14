@@ -16,6 +16,9 @@ class RolesAndPermissionsSeeder extends Seeder
      */
     public function run()
     {
+        // 0. Sync Permissions first
+        \Illuminate\Support\Facades\Artisan::call('rbac:sync');
+
         // 1. Create Default Roles
         $adminRole = Role::firstOrCreate(['name' => 'Admin'], ['display_name' => 'System Administrator', 'description' => 'Full access to all features.']);
         $managerRole = Role::firstOrCreate(['name' => 'Manager'], ['display_name' => 'Shop Manager', 'description' => 'Can manage staff, reports, and overrides.']);
