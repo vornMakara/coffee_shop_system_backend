@@ -16,4 +16,9 @@ class Customer extends Model
     protected $casts = [
         'created_at' => 'datetime'
     ];
+
+    public function branch()
+    {
+        return $this->belongsTo(\App\Modules\Auth\Branch\Models\Branch::class, 'branch_id');
+    }
 }
