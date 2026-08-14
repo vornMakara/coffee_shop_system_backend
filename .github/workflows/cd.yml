@@ -6,7 +6,7 @@ on:
     types:
       - completed
     branches:
-      - main
+      - develop
 
 jobs:
   deploy:
@@ -28,8 +28,8 @@ jobs:
             cd /var/www/coffee_shop_system_backend
 
             echo "Pulling latest code..."
-            git fetch origin main
-            git reset --hard origin/main
+            git fetch origin develop
+            git reset --hard origin/develop
 
             echo "Installing Composer dependencies..."
             composer install --no-dev --optimize-autoloader
