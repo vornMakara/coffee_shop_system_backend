@@ -7,6 +7,7 @@ on:
       - completed
     branches:
       - main
+      - develop
 
 jobs:
   deploy:
@@ -27,9 +28,9 @@ jobs:
           script: |
             cd /var/www/coffee_shop_system_backend
 
-            echo "Pulling latest code..."
-            git fetch origin main
-            git reset --hard origin/main
+            echo "Pulling latest code for branch: ${{ github.event.workflow_run.head_branch }}..."
+            git fetch origin ${{ github.event.workflow_run.head_branch }}
+            git reset --hard origin/${{ github.event.workflow_run.head_branch }}
 
             echo "Installing Composer dependencies..."
             composer install --no-dev --optimize-autoloader
