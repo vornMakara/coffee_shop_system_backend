@@ -26,7 +26,17 @@ jobs:
           timeout: 30s
           command_timeout: 10m
           script: |
-            cd /var/www/coffee_shop_system_backend
+            if [ "${{ github.event.workflow_run.head_branch }}" == "main" ]; then
+              TARGET_DIR="/var/www/coffee_shop_system_backend"
+            elif [ "${{ github.event.workflow_run.head_branch }}" == "develop" ]; then
+              TARGET_DIR="/var/www/coffee_shop_system_staging"
+            else
+              echo "Branch not supported for deployment"
+              exit 1
+            fi
+
+            echo "Deploying to $TARGET_DIR..."
+            cd $TARGET_DIR
 
             echo "Pulling latest code for branch: ${{ github.event.workflow_run.head_branch }}..."
             git fetch origin ${{ github.event.workflow_run.head_branch }}
